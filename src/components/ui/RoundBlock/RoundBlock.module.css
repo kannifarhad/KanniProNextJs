@@ -1,0 +1,19 @@
+:root {
+  --primary-color: #0070f3;
+  --green-color: #28a745;
+  --button-padding: 10px 16px;
+  --button-radius: 4px;
+  --icon-size: 20px;
+}
+
+.block {
+  border-radius: var(--border-radius);
+  padding: 10px 20px 20px 20px;
+  width: 100%;
+  background: var(--card-background);
+  display: flex;
+  flex-direction: column;
+  & .blockContent {
+    margin-top: auto;
+  }
+}

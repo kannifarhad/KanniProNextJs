@@ -1,36 +1,48 @@
+"use client";
 import * as THREE from "three";
 import React, { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
-import { Html, useGLTF } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useGLTF } from "@react-three/drei";
+import { easing } from "maath";
 
-export function Ipad({ screenHTML, ...props }) {
+export function Ipad({ focused, ...props }) {
   const group = useRef();
 
   const { nodes, materials } = useGLTF("/models/ipad.glb");
+  const { camera } = useThree();
 
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime();
-    // group.current.rotation.x = THREE.MathUtils.lerp(
-    //   group.current.rotation.x,
-    //   Math.cos(t / 10) / 10 + 0.25,
-    //   0.1
-    // );
-    group.current.rotation.y = THREE.MathUtils.lerp(
-      group.current.rotation.y,
-      Math.sin(t / 10) / 4,
-      0.1
-    );
-    // group.current.rotation.z = THREE.MathUtils.lerp(
-    //   group.current.rotation.z,
-    //   Math.sin(t / 10) / 10,
-    //   0.1
-    // );
-    group.current.position.y = THREE.MathUtils.lerp(
-      group.current.position.y,
-      (-10 + Math.sin(t)) / 3,
-      0.1
-    );
+  const targetPosition = new THREE.Vector3(); // Reusable vector for target position
+  const lookAtTarget = new THREE.Vector3(6, 1, 1); // Reusable vector for look-at target
+  const offset = new THREE.Vector3(0, 7.5, 7.5); // Offset to position the camera relative to the object
+
+  useFrame((state, delta) => {
+    if (!focused) {
+      const t = state.clock.getElapsedTime();
+      group.current.rotation.y = THREE.MathUtils.lerp(
+        group.current.rotation.y,
+        Math.sin(t / 10) / 4,
+        0.1
+      );
+      group.current.position.y = THREE.MathUtils.lerp(
+        group.current.position.y,
+        (-10 + Math.sin(t)) / 3,
+        0.1
+      );
+    } else {
+      // Get the world position of the screen
+      group.current.getWorldPosition(targetPosition);
+
+      // Offset the target position to position the camera correctly
+      targetPosition.add(offset);
+
+      // Smoothly move the camera to the target position
+      easing.damp3(camera.position, targetPosition, 0.6, delta);
+      // Get the look-at target from the screen's world position
+      // Smoothly rotate the camera to look at the object
+      camera.lookAt(lookAtTarget);
+    }
   });
+
   return (
     <group ref={group} {...props} dispose={null}>
       <group scale={0.5}>
@@ -42,23 +54,7 @@ export function Ipad({ screenHTML, ...props }) {
           <mesh
             geometry={nodes.iPad_Pro_2020_screen_0.geometry}
             material={materials.screen}
-          >
-            <Html
-              className="content"
-              rotation={[Math.PI / 2, 0, 0]}
-              position={[-0.15, -0.0009, 0.7]}
-              scale={0.1}
-              transform
-              occlude
-            >
-              <div
-                className="wrapper"
-                onPointerDown={(e) => e.stopPropagation()}
-              >
-                {screenHTML}
-              </div>
-            </Html>
-          </mesh>
+          />
           <mesh
             geometry={nodes.iPad_Pro_2020_bezel_0.geometry}
             material={materials.bezel}
@@ -155,7 +151,10 @@ export function Ipad({ screenHTML, ...props }) {
             geometry={nodes.Volume_button_Body_0.geometry}
             material={materials.Body}
           />
-          <group rotation={[-0.25, Math.PI - 0.47, 0]} position={[0.4, 0.01, 0.7]}>
+          <group
+            rotation={[-0.25, Math.PI - 0.47, 0]}
+            position={[0.4, 0.01, 0.7]}
+          >
             <mesh
               geometry={nodes.Apple_Pencil_apple_pencil_0.geometry}
               material={materials.apple_pencil}

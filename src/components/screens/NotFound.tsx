@@ -1,7 +1,7 @@
 "use client";
-import InnerLowerHead from "../sections/InnerLowerHead";
-import LastFromBlogCarousel from "../sections/LastFromBlogCarousel";
-import RenderModel from "../ui/ThreeJS/RenderModel";
+import InnerLowerHead from "@/components/sections/InnerLowerHead";
+import LastFromBlogCarousel from "@/components/sections/LastFromBlogCarousel";
+import RenderModel from "@/components/ui/ThreeJS/RenderModel";
 import Catronaut from "@/components/models/Error";
 import { StyledNotFoundContainer } from "./styled";
 import { OrbitControls } from "@react-three/drei";

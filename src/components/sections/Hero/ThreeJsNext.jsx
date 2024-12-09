@@ -8,6 +8,7 @@ import { addHint } from "@/store/reducers/common";
 import dynamic from "next/dynamic";
 import InfoBoxes from "./InfoBoxes";
 import { classNames } from "@/helpers/classNames";
+import { ModelsTypes } from "./constants";
 
 const Laptop = dynamic(() => import("@/components/models/Laptop"), {
   ssr: false,
@@ -24,13 +25,6 @@ const Ipad = dynamic(() => import("@/components/models/Ipad"), {
 const Cloud = dynamic(() => import("@/components/models/Cloud"), {
   ssr: false,
 });
-
-const ModelsTypes = {
-  MOBILE: "MOBILE",
-  DEVELOPMENT: "DEVELOPMENT",
-  UIUX: "UIUX",
-  CLOUD: "CLOUD",
-};
 
 const ThreeScene = () => {
   const [openPopUp, setOpenPopup] = useState(null);
@@ -58,14 +52,7 @@ const ThreeScene = () => {
           }}
         >
           <pointLight position={[10, 10, 10]} intensity={1} />
-
-          <Cloud
-            rotation={[0, 0, 0]}
-            position={[-1.5, 6, 1]}
-            // onPointerOver={handleHoverOn}
-            // onPointerOut={handleHoverOut}
-            // onPointerUp={handleHoverOut}
-          />
+          <Cloud rotation={[0, 0, 0]} position={[-1.5, 6, 1]} />
 
           <Laptop
             rotation={[0, Math.PI, 0]}

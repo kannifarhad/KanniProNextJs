@@ -1,6 +1,6 @@
 import React, { memo, ReactNode } from "react";
-import styles from "./RoundBlock.module.css";
 import BlockHeading, { BlockHeadingProps } from "../BlockHeading";
+import { StyledRoundBlock } from "./styled";
 
 export type RoundBlockProps = {
   heading?: BlockHeadingProps;
@@ -14,10 +14,10 @@ const RoundBlock: React.FC<RoundBlockProps> = ({
   className,
 }) => {
   return (
-    <div className={`block-item ${styles.block} ${className}`}>
+    <StyledRoundBlock className={`block-item ${className}`}>
       {heading && <BlockHeading {...heading} />}
-      <div className={`blockContent ${styles.blockContent}`}>{children}</div>
-    </div>
+      <div className="blockContent">{children}</div>
+    </StyledRoundBlock>
   );
 };
 

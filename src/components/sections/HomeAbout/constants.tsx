@@ -12,14 +12,6 @@ export const blocksInfo: Record<
     heading: {
       title: "Primary Skills",
       subTitle: "Skills that keep the bugs running scared.",
-      icon: {
-        src: "/icons/learning-skills.png",
-        width: 40,
-        style: {
-          marginTop: "-15px",
-        },
-        // height: 'auto',
-      },
     },
     skills: [
       {

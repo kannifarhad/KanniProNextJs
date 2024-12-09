@@ -1,35 +1,57 @@
 "use client";
 import * as THREE from "three";
 import React, { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
+import { easing } from "maath";
 
-export function IPhone({ ...props }) {
+export function IPhone({ focused, ...props }) {
   const group = useRef();
   const { nodes, materials } = useGLTF("/models/iphone.gltf");
+  const { camera } = useThree();
 
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime();
-    group.current.rotation.x = THREE.MathUtils.lerp(
-      group.current.rotation.x,
-      Math.sin(t / 2) / 20 + 0.25,
-      0.1
-    );
-    group.current.rotation.y = THREE.MathUtils.lerp(
-      group.current.rotation.y,
-      Math.cos(t / 4) / 20,
-      0.2
-    );
-    group.current.rotation.z = THREE.MathUtils.lerp(
-      group.current.rotation.z,
-      Math.sin(t / 8) / 20,
-      0.1
-    );
-    group.current.position.y = THREE.MathUtils.lerp(
-      group.current.position.y,
-      (-3 + Math.sin(t / 2)) / 1.8 - 2,
-      0.1
-    );
+  const targetPosition = new THREE.Vector3(); // Reusable vector for target position
+  const lookAtTarget = new THREE.Vector3(-8, -1, 2); // Reusable vector for look-at target
+  const offset = new THREE.Vector3(-1, -10, 6); // Offset to position the camera relative to the object
+
+  useFrame((state, delta) => {
+    if (!focused) {
+      const t = state.clock.getElapsedTime();
+      group.current.rotation.x = THREE.MathUtils.lerp(
+        group.current.rotation.x,
+        Math.sin(t / 2) / 20 + 0.25,
+        0.1
+      );
+      group.current.rotation.y = THREE.MathUtils.lerp(
+        group.current.rotation.y,
+        Math.cos(t / 4) / 20,
+        0.2
+      );
+      group.current.rotation.z = THREE.MathUtils.lerp(
+        group.current.rotation.z,
+        Math.sin(t / 8) / 20,
+        0.1
+      );
+      group.current.position.y = THREE.MathUtils.lerp(
+        group.current.position.y,
+        (-3 + Math.sin(t / 2)) / 1.8 - 2,
+        0.1
+      );
+    } else {
+      {
+        // Get the world position of the screen
+        group.current.getWorldPosition(targetPosition);
+
+        // Offset the target position to position the camera correctly
+        targetPosition.add(offset);
+
+        // Smoothly move the camera to the target position
+        easing.damp3(camera.position, targetPosition, 0.6, delta);
+
+        // Smoothly rotate the camera to look at the object
+        camera.lookAt(lookAtTarget);
+      }
+    }
   });
 
   return (

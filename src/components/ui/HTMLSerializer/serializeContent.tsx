@@ -1,7 +1,7 @@
 import { serialize } from "next-mdx-remote/serialize";
 import rehypePrism from "rehype-prism-plus";
 import rehypeCodeTitles from "rehype-code-titles";
-import { notFound } from "next/navigation";
+// import { notFound } from "next/navigation";
 
 type SerializeProps = Parameters<typeof serialize>[0];
 export type SerializeContentResponse = ReturnType<typeof serialize>;

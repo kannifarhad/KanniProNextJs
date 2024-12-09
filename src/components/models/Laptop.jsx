@@ -11,10 +11,10 @@ function Laptop({ focused, ...props }) {
   const { camera } = useThree();
 
   const targetPosition = new THREE.Vector3(); // Reusable vector for target position
-  const lookAtTarget = new THREE.Vector3(); // Reusable vector for look-at target
-  const offset = new THREE.Vector3(0, 7.5, 5.5); // Offset to position the camera relative to the object
+  const lookAtTarget = new THREE.Vector3(-2, 0, 0); // Reusable vector for look-at target
+  const offset = new THREE.Vector3(0, 0, 7.5); // Offset to position the camera relative to the object
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (!focused) {
       // Floating animation when not focused
       const t = state.clock.getElapsedTime();
@@ -38,11 +38,7 @@ function Laptop({ focused, ...props }) {
         (-4 + Math.cos(t / 2)) / 2.5,
         0.1
       );
-    }
-  });
-
-  useFrame((_, delta) => {
-    if (focused) {
+    } else {
       // Get the world position of the screen
       screenRef.current.getWorldPosition(targetPosition);
 
@@ -54,7 +50,8 @@ function Laptop({ focused, ...props }) {
       easing.damp3(group.current.rotation, [0, 0, 0], 0.6, delta);
 
       // Get the look-at target from the screen's world position
-      screenRef.current.getWorldPosition(lookAtTarget);
+      // screenRef.current.getWorldPosition(lookAtTarget);
+      // console.log(lookAtTarget)
 
       // Smoothly rotate the camera to look at the object
       camera.lookAt(lookAtTarget);
@@ -62,11 +59,7 @@ function Laptop({ focused, ...props }) {
   });
 
   return (
-    <group
-      ref={group}
-      {...props}
-      dispose={null}
-    >
+    <group ref={group} {...props} dispose={null}>
       <group rotation-x={-0.3} position={[0, -0.04, 0.41]}>
         <group position={[0, 2.96, -0.13]} rotation={[Math.PI / 2, 0, 0]}>
           <mesh

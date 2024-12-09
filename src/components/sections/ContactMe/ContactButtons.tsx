@@ -1,7 +1,6 @@
 "use client";
 import { memo } from "react";
 import Button from "@/components/ui/Button";
-import { ColorsEnum } from "@/types/common";
 
 const contactMe = {
   whatsap: "+30 697 575 8827",

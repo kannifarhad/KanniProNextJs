@@ -1,11 +1,11 @@
 import React from "react";
-import styles from "./BlockHeading.module.css";
-import CustomIcon, { CustomIconProps } from "../CustomIcon";
+import CustomIcon, { IconProps } from "../CustomIcon";
+import { StyledBlockHead } from "./styled";
 
 export type BlockHeadingProps = {
   title: string;
   subTitle?: string;
-  icon?: CustomIconProps;
+  icon?: IconProps;
 };
 
 const BlockHeading: React.FC<BlockHeadingProps> = ({
@@ -14,13 +14,13 @@ const BlockHeading: React.FC<BlockHeadingProps> = ({
   icon,
 }) => {
   return (
-    <div className={`block-heading ${styles.blochead}`}>
-      <div className={styles.icon}>{icon && <CustomIcon {...icon} />}</div>
-      <div className={styles.title}>
+    <StyledBlockHead className="block-heading">
+      <div className="icon">{icon && <CustomIcon {...icon} />}</div>
+      <div className="title">
         <h3>{title}</h3>
         {subTitle && <p>{subTitle}</p>}
       </div>
-    </div>
+    </StyledBlockHead>
   );
 };
 

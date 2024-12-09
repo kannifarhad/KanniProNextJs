@@ -4,7 +4,7 @@ import ContactMe from "../sections/ContactMe";
 import BlogList from "../sections/LastFromBlogCarousel";
 import Hero from "@/components/sections/Hero";
 
-const Home = () => {
+export default function Home() {
   return (
     <>
       <Hero />
@@ -14,6 +14,4 @@ const Home = () => {
       <BlogList />
     </>
   );
-};
-
-export default Home;
+}

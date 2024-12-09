@@ -1,4 +1,3 @@
-import { CustomIconProps } from "@/components/ui/CustomImage";
 import { classNames } from "@/helpers/classNames";
 import React from "react";
 import { StyledJobItem } from "./styled";

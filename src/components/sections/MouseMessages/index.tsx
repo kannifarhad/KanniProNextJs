@@ -11,14 +11,13 @@ export const HomeMouse: React.FC = () => {
   const text = useSelector(selectHint);
 
   return (
-    <></>
-    // <MouseTracker>
-    //   {text && (
-    //     <StyledHomeMouse>
-    //       <Chip title={text} icon={<CustomImage src="/images/photo.jpg" />} />
-    //     </StyledHomeMouse>
-    //   )}
-    // </MouseTracker>
+    <MouseTracker>
+      {text && (
+        <StyledHomeMouse>
+          <Chip title={text} icon={<CustomImage src="/images/photo.jpg" />} />
+        </StyledHomeMouse>
+      )}
+    </MouseTracker>
   );
 };
 

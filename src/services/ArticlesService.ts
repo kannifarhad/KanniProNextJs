@@ -1,6 +1,6 @@
 import { LangOptionsEnum } from "@/types/common";
 import axiosClient from "./axiosClient";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 
 interface getArticleProps {
   lang: LangOptionsEnum;
@@ -23,5 +23,8 @@ interface Article {
   author: null | string;
 }
 
-export const getArticle = ({ lang, slug }: getArticleProps): Promise<AxiosResponse<Article>> =>
+export const getArticle = ({
+  lang,
+  slug,
+}: getArticleProps): Promise<AxiosResponse<Article>> =>
   axiosClient.post("/posts/getpostbyslug", { lang, slug });

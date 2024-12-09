@@ -107,7 +107,7 @@ export const workHistoryList: Array<
           </li>
 
           <li>
-            Suggested and implemented architectural changes to improve the app's
+            Suggested and implemented architectural changes to improve the app`s
             structure and long-term maintainability. Created presentation within
             pros and cons including detailed comparison with technologies that
             used meantime.
@@ -180,11 +180,11 @@ export const workHistoryList: Array<
           </li>
           <li>
             Emphasized best practices in both front-end and back-end development
-            principles such as DRY (Don't Repeat Yourself), KISS (Keep It
+            principles such as DRY (Don`t Repeat Yourself), KISS (Keep It
             Simple, Stupid), and SOLID design principles.
           </li>
           <li>
-            The project reduced scientists’ research time by 60%, significantly
+            The project reduced scientists research time by 60%, significantly
             accelerating workflows and boosting productivity.
           </li>
         </ul>

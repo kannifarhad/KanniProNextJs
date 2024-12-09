@@ -9,7 +9,7 @@ import StyledComponentsRegistry from "@/app/registry";
 import MouseMessages from "@/components/sections/MouseMessages";
 
 const QuicksandFont = Quicksand({ subsets: ["latin"] });
-const BebasNeue = Bebas_Neue({ weight: "400" });
+const BebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
 
 export const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (

@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { LoadingEnum } from "@/types/common";
-import { RootState } from "../index";
 import { getAboutMeInfo } from "@/services/AboutServices";
 
 interface AboutMeInfo {
@@ -25,7 +24,7 @@ const SLICE_NAME = "about";
 export const fetchAboutMe = createAsyncThunk(
   `${SLICE_NAME}/fetchAboutMe`,
   async () => {
-    const response = await getAboutMeInfo().then(response=> response.data);
+    const response = await getAboutMeInfo().then((response) => response.data);
     if (!response.title) {
       throw new Error("Failed to fetch about me");
     }
@@ -36,16 +35,7 @@ export const fetchAboutMe = createAsyncThunk(
 const aboutSlice = createSlice({
   name: SLICE_NAME,
   initialState,
-  reducers: {
-    // Action to add a new todo
-    addTodo: (state, action) => {
-      const newTodo = {
-        id: Date.now(),
-        text: action.payload,
-        completed: false,
-      };
-    },
-  },
+  reducers: {},
 
   extraReducers: (builder) => {
     builder
@@ -67,7 +57,7 @@ const aboutSlice = createSlice({
   },
 });
 
-export const { addTodo } = aboutSlice.actions;
+// export const { addTodo } = aboutSlice.actions;
 // export const selectAbout = (state: RootState) => state.about.about;
 // export const selectAboutLoading = (state: RootState) => state.about.loading;
 

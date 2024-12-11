@@ -1,7 +1,6 @@
 "use client";
-
-import React, { useRef, useEffect, ReactNode, useState, memo } from "react";
-import { createPortal } from "react-dom";
+import React, { useRef, useEffect, ReactNode, memo } from "react";
+import ClientPortal from "../ClientPortal";
 
 interface MouseTrackerProps {
   className?: string;
@@ -13,14 +12,8 @@ export const MouseTracker: React.FC<MouseTrackerProps> = ({
   children,
 }) => {
   const element = useRef<HTMLDivElement | null>(null);
-  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
-    null
-  );
 
   useEffect(() => {
-    // Ensure the portal is created only on the client
-    setPortalContainer(document.body);
-
     const offset = { x: 15, y: 20 };
 
     function handler(e: MouseEvent) {
@@ -38,14 +31,12 @@ export const MouseTracker: React.FC<MouseTrackerProps> = ({
     };
   }, []);
 
-  // Return null during the SSR phase
-  if (!portalContainer) return null;
-
-  return createPortal(
-    <div className={`mouse-tracker ${className}`} ref={element}>
-      {children}
-    </div>,
-    portalContainer
+  return (
+    <ClientPortal selector="myportal" show={Boolean(children)}>
+      <div className={`mouse-tracker ${className}`} ref={element}>
+        {children}
+      </div>
+    </ClientPortal>
   );
 };
 

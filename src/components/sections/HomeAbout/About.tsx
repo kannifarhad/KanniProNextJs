@@ -7,7 +7,7 @@ const About = () => {
     <RoundBlock
       heading={{
         title: "About me",
-        subTitle: "The technologies Im most skilled of",
+        subTitle: "A Curious Creator with a Passion for Building and Exploring",
       }}
       className="about-me "
     >
@@ -27,27 +27,36 @@ const About = () => {
       </div>
       <div style={{ paddingLeft: "5px" }}>
         <p>
-          As a dedicated Full Stack Developer with over a decade of experience,
-          I specialize in designing and building high-performance web
-          applications with a strong focus on scalability, user experience, and
-          seamless integration. My expertise spans both front-end and back-end
-          development, enabling me to contribute effectively to projects from
-          conception to deployment.
+          Hello! I`m a passionate Full Stack Developer with over a decade of
+          experience crafting software solutions that blend functionality,
+          scalability, and exceptional user experiences. My journey in tech has
+          taken me from freelancing to working with global companies, tackling
+          diverse challenges and honing my expertise along the way.
         </p>
         <p style={{ marginTop: "10px" }}>
-          <strong>Technical Stack:</strong> Proficient in a wide range of
-          technologies. I am experienced in integrating advanced frameworks such
-          as React, GraphQL, and NodeJs to build efficient, data-driven
-          applications.
+          <strong>Broad Technical Expertise:</strong> With 7+ years of
+          experience in Node.js and 6 years in PHP, I`ve built everything from
+          robust APIs to complex microservices and scalable backends. On the
+          front end, I specialize in React, Next.js, and Vue.js, creating
+          intuitive, responsive, and performant interfaces.
+          <br />
+          <strong> Mobile Development:</strong> I`ve developed and deployed
+          cross-platform mobile apps with React Native and explored Flutter,
+          adding flexibility to my skill set.
+          <br />
+          <strong> UI/UX Insight:</strong> My background in UI/UX design and
+          digital art empowers me to implement visually polished and
+          user-friendly designs, collaborating seamlessly with designers to
+          deliver pixel-perfect results.
         </p>
         <p style={{ marginTop: "10px" }}>
-          <strong>Soft Skills:</strong> Known for my collaborative approach, I
-          work closely with cross-functional teams to ensure alignment with
-          business goals and user needs. I prioritize clean code,
-          maintainability, and best practices in all my projects, aiming to
-          deliver high-quality, impactful solutions. My commitment to mentoring
-          and fostering a culture of continuous learning has contributed to
-          cohesive team environments and successful project outcomes.
+          <strong>Beyond the Code:</strong> I`m not just about tech! I enjoy
+          exploring aquariums, traveling (having visited 27 countries), staying
+          fit, and diving into jazz classics by Chet Baker and Miles Davis. My
+          hobbies in digital art and illustration keep my creativity sharp,
+          adding a unique edge to my projects. Whether building enterprise
+          platforms or collaborating on innovative SaaS solutions, I thrive on
+          solving problems, mentoring teams, and delivering impactful software.
         </p>
       </div>
     </RoundBlock>

@@ -27,6 +27,7 @@ export const RootLayout: FC<PropsWithChildren> = ({ children }) => {
       <body className={`${BebasNeue.className} ${QuicksandFont.className} `}>
         <StoreProvider>
           <StyledComponentsRegistry>
+            <div id="myportal" />
             <div className="flex flex-col container xl mx-auto lg:w-full">
               <Header />
               {children}

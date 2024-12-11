@@ -11,18 +11,18 @@ export type BlogListItemType = {
 
 const BlogListItem = ({ title, id, categories }: BlogListItemType) => {
   return (
-    <StyledBlogItem style={{ backgroundImage: "url(/images/photo.jpg)" }}>
-      <div className="shortStory">
-        <div className="categoryList">
-          {categories?.map((cat) => (
-            <span key={cat}>{cat}</span>
-          ))}
+    <Link href={`/blog/${id}`}>
+      <StyledBlogItem style={{ backgroundImage: "url(/images/photo.jpg)" }}>
+        <div className="shortStory">
+          <div className="categoryList">
+            {categories?.map((cat) => (
+              <span key={cat}>{cat}</span>
+            ))}
+          </div>
+          <div className="readmore">{title}</div>
         </div>
-        <Link href={`/blog/${id}`} className="readmore">
-          {title}
-        </Link>
-      </div>
-    </StyledBlogItem>
+      </StyledBlogItem>
+    </Link>
   );
 };
 

@@ -188,6 +188,9 @@ export const StyledheroInfoBox = styled.div`
     & .element:nth-child(5) {
       animation-delay: 0.8s;
     }
+    & .element:nth-child(6) {
+      animation-delay: 1s;
+    }
   }
 
   /* Define the animation */

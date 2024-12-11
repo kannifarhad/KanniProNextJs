@@ -14,6 +14,7 @@ export const StyledBlockHead = styled.button`
     }
   }
   & .title {
+    text-align: left;
     & h3 {
       font-weight: 800;
       font-size: 26px;

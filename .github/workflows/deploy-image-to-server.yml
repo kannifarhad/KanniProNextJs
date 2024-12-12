@@ -1,0 +1,36 @@
+name: Deploy Docker Image to Cloud Server
+
+on:
+  push:
+    # Trigger on version tags like v1.2.0, v1.3.0, etc.
+    tags:
+      - 'v*.*.*'
+    # Trigger on the "latest" tag
+    # This listens for "latest" as well, so you can deploy when "latest" is updated
+      - 'latest'
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, linux]  # Runs on your self-hosted runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log into GitHub Container Registry
+        run: |
+          echo ${{ secrets.GH_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Pull and deploy Docker image
+        run: |
+          IMAGE_NAME="ghcr.io/kannifarhad/kannipronextjs:${GITHUB_REF##*/}"
+
+          # Pull the latest image
+          docker pull $IMAGE_NAME
+
+          # Stop and remove the existing container (if it exists)
+          docker stop kanniprofront || true
+          docker rm kanniprofront || true
+
+          # Run the new container in detached mode
+          docker run -d --name kanniprofront -p 80:3000 $IMAGE_NAME

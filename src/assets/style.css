@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --dark-grey: #161a19;
+  --green-color: #cdff65;
+  --white-color: #ffffff;
+  --grey-color: #f1f1f1;
+  /* --grey-color: #d8d8d8; */
+
+  --grey-m-color: #313131;
+  --light-violet-color: #d1d4ff;
+  --dark-violet-color: #3b3649;
+  --card-bg3: #4f56d3;
+
+  --grey-transparent: #9f9c9c26;
+
+  --font-bebas: Bebas Neue, Bebas Neue Fallback;
+  --border-radius: 35px;
+  --hero-height: 600px;
+
+  --background: var(--white-color);
+  --foreground: var(--dark-grey);
+
+  --text-color: var(--dark-grey);
+  --text-onlight-color: var(--dark-grey);
+  --text-ondark-color: var(--white-color);
+
+  --card-background: var(--grey-color);
+  --head-background: var(--light-violet-color);
+  --workstory-card-background: var(--light-violet-color);
+
+  --lampImageFilter: invert(1) grayscale(0);
+  --lampContFilter: invert(1);
+  --mobile-layout-size: 900px;
+
+  button.green.text {
+    & .title {
+      color: var(--dark-grey);
+    }
+    & .svgicon {
+      fill: var(--dark-grey);
+    }
+  }
+}
+
+.dark {
+  --background: var(--dark-grey);
+  --foreground: var(--grey-color);
+  --text-color: var(--dark-grey);
+
+  --workstory-card-background: var(--grey-m-color);
+  --card-background: var(--grey-m-color);
+
+  --lampImageFilter: none;
+  --lampContFilter: none;
+  button.green.text {
+    & .title {
+      color: unset;
+    }
+    & .svgicon {
+      fill: var(--green-color);
+    }
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: "Quicksand", sans-serif !important;
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="%23FFF" stroke="%23000" stroke-width="2" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>'),
+    auto;
+}
+
+.pointerCursor,
+a,
+button {
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="%23FFF" stroke="%23000" stroke-width="2" stroke-linejoin="round" d="M10 11V8.99c0-.88.59-1.64 1.44-1.86h.05A1.99 1.99 0 0 1 14 9.05V12v-2c0-.88.6-1.65 1.46-1.87h.05A1.98 1.98 0 0 1 18 10.06V13v-1.94a2 2 0 0 1 1.51-1.94h0A2 2 0 0 1 22 11.06V14c0 .6-.08 1.27-.21 1.97a7.96 7.96 0 0 1-7.55 6.48 54.98 54.98 0 0 1-4.48 0 7.96 7.96 0 0 1-7.55-6.48C2.08 15.27 2 14.59 2 14v-1.49c0-1.11.9-2.01 2.01-2.01h0a2 2 0 0 1 2.01 2.03l-.01.97v-10c0-1.1.9-2 2-2h0a2 2 0 0 1 2 2V11Z"></path></svg>'),
+    pointer !important;
+}
+
+.mouse-tracker {
+  position: fixed;
+  z-index: 9999999;
+}
+.no-pointer {
+  pointer-events: none;
+}
+
+.sectionHead {
+  font-family: var(--font-bebas);
+  font-size: 50px;
+  margin-top: 70px;
+  padding-left: 25px;
+}
+.nav-mobile {
+  display: none;
+}
+@media (width <= 1280px) {
+  .container {
+    max-width: 100%;
+  }
+}
+
+@media (width <= 500px) {
+  .sectionHead {
+    padding: 0px;
+    text-align: center;
+  }
+  .container {
+    width: 100%;
+    padding: 0px;
+  }
+}
+
+@media (width <= 900px) {
+  .nav-wrapper {
+    display: none;
+  }
+  .nav-mobile {
+    display: block;
+  }
+}

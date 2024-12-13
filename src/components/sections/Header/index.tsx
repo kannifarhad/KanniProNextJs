@@ -1,4 +1,4 @@
-import Navigation from "./Navigation";
+import Navigation from "@/components/sections/Navigation";
 import { memo } from "react";
 import { StyledHeader } from "./styled";
 

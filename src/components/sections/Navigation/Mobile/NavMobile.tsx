@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import BurgerMenuIcon from "./BurgerMenuIcon";
-import { StyledMobileNavCont, StyledMobNavWrap } from "./styled";
+import { StyledMobileNavCont, StyledMobNavWrap } from "../styled";
 import Link from "next/link";
 import { MotionConfig, motion } from "framer-motion";
-import { routes } from "./constants";
+import { routes } from "../constants";
 
 const Navigation = () => {
   const [active, setActive] = useState(false);

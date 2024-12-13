@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
   transpilePackages: ["next-mdx-remote"],
   experimental: {
   },
-  outputFileTracing: true,
   compiler: {
     styledComponents: true,
   },

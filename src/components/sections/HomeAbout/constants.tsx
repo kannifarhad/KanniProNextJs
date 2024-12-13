@@ -155,6 +155,10 @@ export const blocksInfo: Record<
         tooltip: "4 years of experience",
       },
       {
+        title: "Github Actions",
+        tooltip: "3 years of experience",
+      },
+      {
         title: "ELK ( ElasticSearch-Logstash-Kibana )",
         tooltip: "4 years of experience",
       },

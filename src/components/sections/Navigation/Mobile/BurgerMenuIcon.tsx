@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { MotionConfig, motion } from "framer-motion";
-import { StyledBurgerMenu } from "./styled";
+import { StyledBurgerMenu } from "../styled";
 
 const BurgerMenuIcon = ({
   active,

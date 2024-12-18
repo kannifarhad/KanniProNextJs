@@ -8,10 +8,10 @@ import {
   NextButton,
   usePrevNextButtons,
 } from "@/helpers/emblaHelpers";
-import { blogList } from "./constants";
 import BlogItem from "@/components/sections/BlogListItem";
+import { ArticleList } from "@/types/api";
 
-const BlogList = () => {
+const BlogList = ({ blogList }: { blogList: ArticleList }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ dragFree: true });
 
   const {
@@ -34,7 +34,7 @@ const BlogList = () => {
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
             {blogList.map((blog) => (
-              <div className="embla__slide" key={blog.id}>
+              <div className="embla__slide" key={blog.documentId}>
                 <BlogItem {...blog} />
               </div>
             ))}

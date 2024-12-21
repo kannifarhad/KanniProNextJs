@@ -1,9 +1,9 @@
 import InnerLowerHead from "@/components/sections/InnerLowerHead";
-import { blogList } from "@/components/sections/LastFromBlogCarousel/constants";
 import BlogItem from "@/components/sections/BlogListItem";
 import { StyledBlogListContainer } from "./styled";
+import { ArticleList } from "@/types/api";
 
-const BlogPage = () => {
+const BlogPage = ({ blogList }: { blogList: ArticleList }) => {
   return (
     <StyledBlogListContainer>
       <InnerLowerHead
@@ -15,9 +15,7 @@ const BlogPage = () => {
         style={{ paddingBottom: "100px" }}
       >
         {blogList.map((blog) => (
-          <div key={blog.id} className="">
-            <BlogItem {...blog} />
-          </div>
+          <BlogItem key={blog.documentId} {...blog} />
         ))}
       </div>
     </StyledBlogListContainer>

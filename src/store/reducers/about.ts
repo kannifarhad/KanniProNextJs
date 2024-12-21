@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { LoadingEnum } from "@/types/common";
-import { getAboutMeInfo } from "@/services/AboutServices";
 
 interface AboutMeInfo {
   title: string;
@@ -24,11 +23,12 @@ const SLICE_NAME = "about";
 export const fetchAboutMe = createAsyncThunk(
   `${SLICE_NAME}/fetchAboutMe`,
   async () => {
-    const response = await getAboutMeInfo().then((response) => response.data);
-    if (!response.title) {
-      throw new Error("Failed to fetch about me");
-    }
-    return response;
+    // const response = await getAboutMeInfo().then((response) => response.data);
+    // if (!response.title) {
+    //   throw new Error("Failed to fetch about me");
+    // }
+    // return response;
+    return {};
   }
 );
 
@@ -42,13 +42,8 @@ const aboutSlice = createSlice({
       .addCase(fetchAboutMe.pending, (state) => {
         state.loading = LoadingEnum.LOADING;
       })
-      .addCase(fetchAboutMe.fulfilled, (state, action) => {
+      .addCase(fetchAboutMe.fulfilled, (state) => {
         state.loading = LoadingEnum.SUCCESS;
-        state.about = {
-          title: action.payload.title,
-          biography: action.payload.fullstory,
-          shortInfo: action.payload.shortstory,
-        };
       })
       .addCase(fetchAboutMe.rejected, (state, action) => {
         state.loading = LoadingEnum.FAILED;

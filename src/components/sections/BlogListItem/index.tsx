@@ -1,22 +1,19 @@
 import { memo } from "react";
 import { StyledBlogItem } from "./styled";
 import Link from "next/link";
+import { ArticleListItem } from "@/types/api";
+import { getImagePath } from "@/helpers/common";
 
-export type BlogListItemType = {
-  title: string;
-  id?: number;
-  thumb?: string;
-  categories?: string[];
-};
-
-const BlogListItem = ({ title, id, categories }: BlogListItemType) => {
+const BlogListItem = ({ title, slug, categories, cover }: ArticleListItem) => {
   return (
-    <Link href={`/blog/${id}`}>
-      <StyledBlogItem style={{ backgroundImage: "url(/images/photo.jpg)" }}>
+    <Link href={`/blog/${slug}`}>
+      <StyledBlogItem
+        style={{ backgroundImage: `url(${getImagePath(cover.url)})` }}
+      >
         <div className="shortStory">
           <div className="categoryList">
             {categories?.map((cat) => (
-              <span key={cat}>{cat}</span>
+              <span key={cat.name}>{cat.name}</span>
             ))}
           </div>
           <div className="readmore">{title}</div>

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useCallback } from "react";
 import { StyledHero3D } from "./styled";
 import { ContactShadows, OrbitControls } from "@react-three/drei";
@@ -26,20 +27,20 @@ const Cloud = dynamic(() => import("@/components/models/Cloud"), {
   ssr: false,
 });
 
-const ThreeScene = () => {
-  const [openPopUp, setOpenPopup] = useState(null);
-  const [hover, setHover] = useState(false);
+const ThreeScene: React.FC = () => {
+  const [openPopUp, setOpenPopup] = useState<ModelsTypes | null>(null);
+  const [hover, setHover] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const handleHoverOn = useCallback(() => {
     setHover(true);
     dispatch(addHint("Click for more info 🤙"));
-  }, [dispatch, setHover]);
+  }, [dispatch]);
 
   const handleHoverOut = useCallback(() => {
     setHover(false);
     dispatch(addHint(null));
-  }, [dispatch, setHover]);
+  }, [dispatch]);
 
   return (
     <StyledHero3D className="col-span-5 max-[900px]:hidden">

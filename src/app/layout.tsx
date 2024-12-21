@@ -14,16 +14,6 @@ const BebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
 export const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html lang="en">
-      <title>Farhad Aliyev - Wellcome to my</title>
-      <meta
-        property="og:description"
-        content="Farhad Aliyev - Wellcome to my page"
-      />
-      {/* <link
-            rel="stylesheet"
-            href="https://unpkg.com/dracula-prism/dist/css/dracula-prism.css"
-          ></link> */}
-      <meta property="og:title" content="Farhad Aliyev - Wellcome to my page" />
       <body className={`${BebasNeue.className} ${QuicksandFont.className} `}>
         <StoreProvider>
           <StyledComponentsRegistry>

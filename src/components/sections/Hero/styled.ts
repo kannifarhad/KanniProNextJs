@@ -129,6 +129,7 @@ export const StyledheroInfoBox = styled.div`
       min-width: 40%;
       position: relative;
       height: 100%;
+      padding-right: 30px;
 
       &::after {
         content: " ";

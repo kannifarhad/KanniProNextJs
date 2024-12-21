@@ -3,14 +3,13 @@ import LastFromBlogCarousel from "@/components/sections/LastFromBlogCarousel";
 import HTMLSerializer, { ContentParsed } from "@/components/ui/HTMLSerializer";
 import React from "react";
 import BlogInnerHead from "./BlogInnerHead";
+import { Article } from "@/types/api";
 
-const BlogPage: React.FC<{ content?: ContentParsed }> = ({ content }) => {
+type BlogPageProps = Article & { content?: ContentParsed };
+const BlogPage: React.FC<BlogPageProps> = ({ content, ...rest }) => {
   return (
     <StyledBlogListContainer>
-      <BlogInnerHead
-        title="Mastering Redux Toolkit for State Management"
-        subtitle="Because spending countless hours debugging and perfecting something no one asked for is definitely my idea of fun. 🤷🏻‍♂️"
-      />
+      <BlogInnerHead {...rest}  />
       <div style={{ paddingBottom: "100px" }}>
         <HTMLSerializer content={content} />
       </div>

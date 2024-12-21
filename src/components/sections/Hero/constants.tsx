@@ -1,13 +1,12 @@
-export const ModelsTypes = {
-  MOBILE: "MOBILE",
-  DEVELOPMENT: "DEVELOPMENT",
-  UIUX: "UIUX",
-  CLOUD: "CLOUD",
-};
+export enum ModelsTypes {
+  MOBILE = "MOBILE",
+  DEVELOPMENT = "DEVELOPMENT",
+  UIUX = "UIUX",
+}
 
 export const contentInfo = {
   [ModelsTypes.MOBILE]: {
-    image: "/images/software.png",
+    image: "/images/mobiledev.png",
     title: (
       <>
         Mobile App <br />
@@ -40,7 +39,7 @@ export const contentInfo = {
     ),
   },
   [ModelsTypes.DEVELOPMENT]: {
-    image: "/images/software.png",
+    image: "/images/fullstackdev.png",
     title: (
       <>
         FullStack <br />
@@ -86,7 +85,7 @@ export const contentInfo = {
     ),
   },
   [ModelsTypes.UIUX]: {
-    image: "/images/software.png",
+    image: "/images/digital-art.png",
     title: (
       <>
         UI/UX and

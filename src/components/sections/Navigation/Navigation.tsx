@@ -13,7 +13,7 @@ const Navigation = () => {
     <>
       <div className="nav-wrapper flex flex-row">
         <StyledHeaderLeft className="flex flex-row items-center">
-          <div className="logo">KANNIFARHAD</div>
+          <Link href="/" className="logo">KANNIFARHAD</Link>
           <StyledHeaderNavigation>
             <ul className="menu md:flex flex-row space-x-6">
               <li>

@@ -6,10 +6,10 @@ import BlogInnerHead from "./BlogInnerHead";
 import { Article } from "@/types/api";
 
 type BlogPageProps = Article & { content?: ContentParsed };
-const BlogPage: React.FC<BlogPageProps> = ({ content, title, description }) => {
+const BlogPage: React.FC<BlogPageProps> = ({ content, ...rest }) => {
   return (
     <StyledBlogListContainer>
-      <BlogInnerHead title={title} subtitle={description} />
+      <BlogInnerHead {...rest}  />
       <div style={{ paddingBottom: "100px" }}>
         <HTMLSerializer content={content} />
       </div>

@@ -6,12 +6,18 @@ import Button from "@/components/ui/Button";
 import CustomImage from "@/components/ui/CustomImage";
 import { contentInfo } from "./constants";
 
-const InfoBoxes = ({ open, handleClose }) => {
+interface InfoBoxesProps {
+  open: keyof typeof contentInfo | null;
+  handleClose: () => void;
+}
+
+const InfoBoxes: React.FC<InfoBoxesProps> = ({ open, handleClose }) => {
   if (!open) return null;
+
   const data = contentInfo[open];
 
   return (
-    <StyledheroInfoBox className={classNames({ showInfo: open })}>
+    <StyledheroInfoBox className={classNames({ showInfo: !!open })}>
       <div className="infoBoxContainer">
         <div className="close">
           <Button
@@ -28,9 +34,9 @@ const InfoBoxes = ({ open, handleClose }) => {
           <div className="coverImage flex items-center justify-center">
             <CustomImage
               src={data?.image}
-              alt={data?.title}
-              width={400}
-              height={400}
+              alt="Image"
+              width={300}
+              height={300}
             />
           </div>
           <div className="infoBlock flex flex-row justify-center">

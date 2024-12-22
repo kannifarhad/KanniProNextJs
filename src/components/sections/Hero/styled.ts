@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 export const StyledHeroInfo = styled.div`
   background-color: var(--head-background);
-  background-size: var(--hero-height);
-  background-position: left bottom;
+  background-size: 500px;
+  background-position: right bottom;
   background-repeat: no-repeat;
   padding: 40px 20px 40px 0px;
   height: var(--hero-height);
@@ -31,7 +31,7 @@ export const StyledHeroInfo = styled.div`
   & .heading {
     position: relative;
     left: -100px;
-    top: 70px;
+    top: 210px;
     & h4 {
       -webkit-text-stroke: 1px var(--background);
       color: transparent;

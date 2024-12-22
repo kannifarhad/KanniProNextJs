@@ -1,7 +1,7 @@
 import HomeAbout from "../sections/HomeAbout";
 import HomeWorkHistory from "../sections/HomeWorkHistory";
 import ContactMe from "../sections/ContactMe";
-import BlogList from "../sections/LastFromBlogCarousel";
+import LastFromBlogCarousel from "../sections/LastFromBlogCarousel";
 import Hero from "@/components/sections/Hero";
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
       <HomeAbout />
       <HomeWorkHistory />
       <ContactMe />
-      <BlogList />
+      <LastFromBlogCarousel />
     </>
   );
 }

@@ -4,7 +4,7 @@ import { StyledHeader } from "./styled";
 
 const Header = () => {
   return (
-    <StyledHeader className="home-header max[9000px]:mt-2">
+    <StyledHeader className="home-header min-[900px]:mt-2">
       <Navigation />
     </StyledHeader>
   );

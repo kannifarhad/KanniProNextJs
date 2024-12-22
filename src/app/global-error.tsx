@@ -3,7 +3,7 @@
 const ErrorComponent = () => {
   return (
     <>
-      <>ErrorComponent</>
+      <h2>Something went wrong!</h2>
     </>
   );
 };

@@ -8,7 +8,7 @@ export const StyledLastFromBlogContainer = styled.div`
   z-index: 1;
   position: relative;
   overflow: hidden;
-  padding: 40px 0px 40px 20px;
+  padding: 20px 0px 20px 20px;
   &::after {
     content: " ";
     pointer-events: none;
@@ -46,6 +46,7 @@ export const StyledBlogListCarousel = styled.div`
   }
   .embla__viewport {
     overflow: hidden;
+    padding: 20px 0px 20px 20px;
   }
   .embla__container {
     display: flex;

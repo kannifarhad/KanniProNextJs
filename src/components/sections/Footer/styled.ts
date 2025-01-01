@@ -1,7 +1,7 @@
 "use client";
 import styled from "styled-components";
 
-export const StyledFooter = styled.div`
+export const StyledFooter = styled.footer`
   border-radius: 0px 0px var(--border-radius) var(--border-radius);
   margin-top: -55px;
   background: var(--head-background);

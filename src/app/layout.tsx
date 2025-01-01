@@ -11,10 +11,16 @@ import MouseMessages from "@/components/sections/MouseMessages";
 const QuicksandFont = Quicksand({ subsets: ["latin"] });
 const BebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
 
+const getFontClassNames = () => {
+  return `${BebasNeue.className} ${QuicksandFont.className}`;
+};
+
 export const RootLayout: FC<PropsWithChildren> = ({ children }) => {
+  const fontClassNames = getFontClassNames();
+
   return (
     <html lang="en">
-      <body className={`${BebasNeue.className} ${QuicksandFont.className} `}>
+      <body className={fontClassNames}>
         <StoreProvider>
           <StyledComponentsRegistry>
             <div id="myportal" />

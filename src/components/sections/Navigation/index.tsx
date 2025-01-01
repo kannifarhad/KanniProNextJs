@@ -15,7 +15,7 @@ const Navigation = () => {
         <StyledHeaderLeft className="flex flex-row items-center">
           <Link href="/" className="logo">KANNIFARHAD</Link>
           <StyledHeaderNavigation>
-            <ul className="menu md:flex flex-row space-x-6">
+            <nav className="menu md:flex flex-row space-x-6">
               <li>
                 <Link
                   href="/"
@@ -49,7 +49,7 @@ const Navigation = () => {
                   Contact
                 </Link>
               </li>
-            </ul>
+            </nav>
           </StyledHeaderNavigation>
           <div style={{ marginLeft: "auto" }}>
             <ThemeModeSwitch />

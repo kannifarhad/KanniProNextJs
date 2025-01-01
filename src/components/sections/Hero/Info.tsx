@@ -20,7 +20,7 @@ const Hero = () => {
         <h3 className="title">FARHAD ALIYEV</h3>
         <div className="shortInfo">
           Senior Software Engineer <br />
-          Team Lead
+          Software Architect
         </div>
       </div>
     </StyledHeroInfo>

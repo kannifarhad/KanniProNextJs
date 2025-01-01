@@ -13,15 +13,30 @@ const About = () => {
     >
       <div className="flex gap-2 items-center flex-wrap mt-2 mb-4">
         <ChipWithIcon
-          icon={{ name: "Loaction", color: "#fff", width: "20px" }}
+          icon={{
+            name: "Loaction",
+            color: "#fff",
+            width: "20px",
+            style: { fill: "#565656" },
+          }}
           title="Athens, Greece"
         />
         <ChipWithIcon
-          icon={{ name: "Email", color: "#fff", width: "18px" }}
+          icon={{
+            name: "Filledpaper",
+            color: "#fff",
+            width: "17px",
+            style: { marginLeft: "-3px", fill: "#565656" },
+          }}
           title="farhad@kanni.pro"
         />
         <ChipWithIcon
-          icon={{ name: "Whatsapp", color: "#fff", width: "20px" }}
+          icon={{
+            name: "Telephone",
+            color: "#fff",
+            width: "20px",
+            style: { fill: "#565656" },
+          }}
           title="(+30) 697-575-8827"
         />
       </div>

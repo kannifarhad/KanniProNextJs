@@ -71,10 +71,10 @@ const VARIANTS = {
     closed: {
       width: "60px",
       height: "60px",
-      borderTopLeftRadius: 15,
-      borderTopRightRadius: 15,
-      borderBottomLeftRadius: 15,
-      borderBottomRightRadius: 15,
+      // borderTopLeftRadius: 15,
+      borderTopRightRadius: 0,
+      // borderBottomLeftRadius: 15,
+      borderBottomRightRadius: 25,
     },
   },
   navigation: {

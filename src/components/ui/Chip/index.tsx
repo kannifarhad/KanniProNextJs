@@ -4,6 +4,7 @@ import Icon, { IconProps } from "../CustomIcon";
 
 export type ChipWithIconProps = {
   title: string;
+  color?: string;
   icon: IconProps;
 };
 

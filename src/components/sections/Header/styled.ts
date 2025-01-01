@@ -1,7 +1,7 @@
 "use client";
 import styled from "styled-components";
 
-export const StyledHeader = styled.div`
+export const StyledHeader = styled.header`
   & .nav-wrapper {
     height: 60px;
   }

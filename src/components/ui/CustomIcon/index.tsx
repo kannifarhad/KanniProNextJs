@@ -13,6 +13,10 @@ import Email from "./icons/email";
 import Loaction from "./icons/loaction";
 import Bag from "./icons/bag";
 import Calendar from "./icons/calendar";
+import Pen from "./icons/pen";
+import Copy from "./icons/copy";
+import Telephone from "./icons/telephone";
+import Filledpaper from "./icons/filledpaper";
 
 const iconMap = {
   Close,
@@ -27,6 +31,10 @@ const iconMap = {
   Loaction,
   Bag,
   Calendar,
+  Pen,
+  Copy,
+  Telephone,
+  Filledpaper
 };
 
 type IconName = keyof typeof iconMap;

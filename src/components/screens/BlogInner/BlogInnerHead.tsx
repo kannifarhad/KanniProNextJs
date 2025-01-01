@@ -17,14 +17,22 @@ const BlogInnerHead: React.FC<BlogInnerHeadProps> = ({
     <InnerLowerHead title={title} subhead={description}>
       <div className="flex gap-2">
         <ChipWithIcon
-          icon={{ name: "Calendar", color: "#fff", width: "16px" }}
+          color="#fff"
+          icon={{
+            name: "Calendar",
+            color: "#D1D4FF",
+            width: "16px",
+            style: { fill: "#6d73c6" },
+          }}
           title="20 Nov. 2024"
         />
         {categories && (
           <ChipWithIcon
+            color="#fff"
             icon={{
-              name: "Calendar",
-              color: "#fff",
+              name: "Pen",
+              color: "#D1D4FF",
+              style: { fill: "#6d73c6" },
               width: "16px",
             }}
             title={categories.map((item) => item.name).join(", ")}

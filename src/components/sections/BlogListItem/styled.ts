@@ -1,7 +1,7 @@
 "use client";
 import styled from "styled-components";
 
-export const StyledBlogItem = styled.div`
+export const StyledBlogItem = styled.article`
   width: 100%;
   height: 500px;
   border-radius: var(--border-radius);
@@ -10,9 +10,20 @@ export const StyledBlogItem = styled.div`
   background-repeat: no-repeat;
   box-sizing: border-box;
   position: relative;
+  overflow: hidden;
+  &::after {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    content: "";
+    /* background: rgba(--background, 0.9); */
+    background: var(--background);
+    opacity: 0.4;
+  }
   & .shortStory {
     position: absolute;
     width: calc(100% - 40px);
+    z-index: 1;
     padding: 20px;
     border-radius: 20px;
     bottom: 20px;
@@ -47,6 +58,34 @@ export const StyledBlogItem = styled.div`
       font-size: 20px;
       line-height: 25px;
       font-weight: 500;
+    }
+  }
+  animation: bounce-on-leave 0.3s ease-in-out forwards;
+  &:hover {
+    animation: bounce-on-hover 0.3s ease-in-out forwards;
+  }
+
+  @keyframes bounce-on-hover {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes bounce-on-leave {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
     }
   }
 `;

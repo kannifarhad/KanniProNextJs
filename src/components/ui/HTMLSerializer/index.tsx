@@ -1,16 +1,28 @@
-"use client";
-import { serialize } from "next-mdx-remote/serialize";
-import { MDXRemote } from "next-mdx-remote";
+import { MDXRemote, MDXRemoteProps, } from "next-mdx-remote/rsc";
 import React, { memo } from "react";
-type SerializeContentResponse = ReturnType<typeof serialize>;
-export type ContentParsed = Awaited<SerializeContentResponse>;
+import { CompileOptions } from '@mdx-js/mdx';
+import { Code } from "@/components/ui/HTMLSerializer/MDXcomponents";
+import remarkMdxCodeMeta from "remark-mdx-code-meta";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 
-const Content: React.FC<{ content?: ContentParsed }> = ({ content }) => {
+type ArrayElement<T> = T extends (infer U)[] ? U : never;
+type Pluggable = ArrayElement<NonNullable<CompileOptions['remarkPlugins']>>
+
+const Content: React.FC<{ content?: string }> = ({ content }) => {
   if (!content) return null;
   return (
-    // <Suspense fallback={<>Loading...</>}>
-    <MDXRemote {...content} />
-    // </Suspense>
+    <ErrorBoundary fallback={<></>}>
+      <MDXRemote
+        source={content}
+        options={{
+          mdxOptions: {
+            remarkPlugins: [remarkMdxCodeMeta as Pluggable],
+            rehypePlugins: [],
+          },
+        }}
+        components={{ pre: Code } as MDXRemoteProps["components"]}
+      />
+    </ErrorBoundary>
   );
 };
 

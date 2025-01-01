@@ -40,7 +40,7 @@ export const StyledButton = styled.button`
       transition: all 0.3s ease;
     }
     & .svgicon {
-      fill: var(--button-text-hover-color);
+      fill: var(--button-text-hover-color) !important;
       transition: all 0.3s ease;
     }
     span {
@@ -54,9 +54,6 @@ export const StyledButton = styled.button`
       margin-right: 8px;
     }
   }
-  /* &:active {
-    background-color: $btn-color;
-  } */
 
   span {
     position: absolute;
@@ -86,8 +83,11 @@ export const StyledButton = styled.button`
 
   &.outlined {
     background-color: transparent;
-    color: var(--button-bg-color);
+    --button-text-color: var(--foreground);
     border: 1px solid var(--button-bg-color);
+    /* & .title {
+      color: var(--foreground);
+    } */
   }
 
   &.text {
@@ -113,7 +113,14 @@ export const StyledButton = styled.button`
     --button-span-color: var(--green-color);
   }
 
-  &.primary.outlined {
+  &.green.standard {
+    --button-text-color: var(--dark-grey);
+    --button-text-hover-color: var(--green-color);
+    --button-span-color: var(--dark-grey);
+    --button-border-hover-color: var(--green-color);
+  }
+
+  &.green.outlined {
     --button-span-color: var(--green-color);
     --button-text-color: var(--dark-grey);
 

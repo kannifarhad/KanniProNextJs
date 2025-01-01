@@ -65,7 +65,14 @@ export const StyledHeroInfo = styled.div`
       h3 {
         position: relative;
         margin-top: -50px;
+        color: #fff;
       }
+      & .shortInfo {
+        color: #fff;
+      }
+    }
+    &::after {
+      display: none;
     }
   }
 `;

@@ -1,18 +1,19 @@
-import { StyledBlogListContainer } from "./styled";
+import { StyledBlogListContainer, StyledBlogContent } from "./styled";
 import LastFromBlogCarousel from "@/components/sections/LastFromBlogCarousel";
-import HTMLSerializer, { ContentParsed } from "@/components/ui/HTMLSerializer";
+import HTMLSerializer from "@/components/ui/HTMLSerializer";
 import React from "react";
 import BlogInnerHead from "./BlogInnerHead";
 import { Article } from "@/types/api";
+import "@/assets/atom-one-dark.css.css";
 
-type BlogPageProps = Article & { content?: ContentParsed };
-const BlogPage: React.FC<BlogPageProps> = ({ content, ...rest }) => {
+const BlogPage: React.FC<{ article: Article }> = ({ article }) => {
+  const { fullstory, ...rest } = article;
   return (
     <StyledBlogListContainer>
-      <BlogInnerHead {...rest}  />
-      <div style={{ paddingBottom: "100px" }}>
-        <HTMLSerializer content={content} />
-      </div>
+      <BlogInnerHead {...rest} />
+      <StyledBlogContent>
+        <HTMLSerializer content={fullstory} />
+      </StyledBlogContent>
       <LastFromBlogCarousel />
     </StyledBlogListContainer>
   );

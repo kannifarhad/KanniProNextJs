@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image, { ImageProps } from "next/image";
 import { AnchorHTMLAttributes, DetailedHTMLProps, useState } from "react";
-import { StyledCodeBlock } from "./styled";
+import { StyledCodeBlock, StyledInfoBox } from "./styled";
 import Button from "../Button";
 import Highlighter from "./Highlighter";
 type ComponentWithChildProps<P> = React.PropsWithChildren<P>;
@@ -17,8 +17,10 @@ interface CodeProps {
   higlight?: string;
 }
 
-export function Code({ children, name = "> code", ...rest }: CodeProps) {
+export function Code({ children, name , ...rest }: CodeProps) {
   const [buttonText, setButtonText] = useState("Copy");
+  const language =
+    /language-(\w+)/.exec(children.props?.className || "")?.[1] || "javascript";
 
   const handleCopyCode = async () => {
     const codeString =
@@ -46,7 +48,9 @@ export function Code({ children, name = "> code", ...rest }: CodeProps) {
             <span />
             <span />
           </div> */}
-          <div className="name">{name}</div>
+          <div className="name">
+            <span>{language}</span> {name && `: ${name}` }
+          </div>
         </div>
         <div className="codetoolbox">
           <Button
@@ -84,7 +88,7 @@ interface CustomLinkProps
 }
 
 // CustomLink component
-function CustomLink({ href, children, ...props }: CustomLinkProps) {
+export function CustomLink({ href, children, ...props }: CustomLinkProps) {
   if (href.startsWith("/")) {
     return (
       <Link href={href} {...props}>
@@ -114,15 +118,19 @@ interface RoundedImageProps extends ImageProps {
 }
 
 // RoundedImage component
-function RoundedImage({ alt, ...props }: RoundedImageProps) {
-  return <Image alt={alt} className="rounded-lg" {...props} />;
+export function RoundedImage({ alt, ...props }: RoundedImageProps) {
+  return (
+    <Image
+      alt={alt}
+      width="100"
+      height="100"
+      className="rounded-lg roundedImage"
+      {...props}
+    />
+  );
 }
 
-// Components object
-const components = {
-  Image: RoundedImage,
-  a: CustomLink,
-  pre: Code,
-};
-
-export default components;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function InfoBox(props: any) {
+  return <StyledInfoBox {...props} />;
+}

@@ -13,6 +13,7 @@ export const StyledBlogContent = styled.article`
   width: 100%;
   box-sizing: border-box;
   margin: 0px auto;
+  font-size: 17px;
   & h1 {
     font-size: 30px;
   }
@@ -38,7 +39,7 @@ export const StyledBlogContent = styled.article`
   }
 
   & a {
-    color: #007bff;
+    color: #575fff;
     text-decoration: none;
 
     &:hover {
@@ -50,6 +51,7 @@ export const StyledBlogContent = styled.article`
   & ol {
     margin: 1em 0;
     padding-left: 2em;
+    list-style: disc;
   }
 
   & li {
@@ -80,11 +82,19 @@ export const StyledBlogContent = styled.article`
 
   & img {
     max-width: 100%;
+    width: 100%;
     height: auto;
     display: block;
     margin: 1em 0;
   }
+  & .roundedImage{
+    border: 1px solid var(--head-background);
 
+  }
+  & .headingLinks {
+    color: rgb(134, 134, 134);
+    margin-right: 5px;
+  }
   & table {
     width: 100%;
     border-collapse: collapse;

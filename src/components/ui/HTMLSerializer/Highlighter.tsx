@@ -35,14 +35,14 @@ export const Highlighter = memo(
     const ADDED = add.replace(" ", "").split(",");
     const REMOVED = remove.replace(" ", "").split(",");
     const HIGHLIGHTED = higlight.replace(" ", "").split(",");
-    const language =
-      /language-(\w+)/.exec(className || "")?.[1] || "javascript";
-
+    const language = /language-(\w+)/.exec(className || "")?.[1] || "javascript";
+    const isBashCode = language !== 'bash' && language !== 'shell';
+    
     return (
       <SyntaxHighlighter
         language={language.toLowerCase()}
         {...properties}
-        showLineNumbers
+        showLineNumbers={isBashCode}
         wrapLongLines
         style={atomOneDark}
         lineProps={(line: number) => {

@@ -2,29 +2,27 @@
 import styled from "styled-components";
 
 export const StyledCodeBlock = styled.div`
-  /* background: #ccc; */
-  border-radius: 20px;
+  border-radius: 10px;
   overflow: hidden;
   margin: 30px 0px;
   & .codehead {
-    padding: 12px 14px 10px 20px;
+    padding: 8px 10px 7px 20px;
     background: var(--head-background);
     display: flex;
     flex-direction: row;
     align-items: center;
-    /* border: 1px solid #aeb0c7; */
-    border-radius: 20px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
     border-bottom: 0px;
     & .codetitle {
       display: flex;
       flex-direction: row;
       align-items: center;
       .name {
-        font-weight: 500;
-        font-style: oblique;
         color: #616d83;
+        font-weight: 400;
+        span {
+          color: #6d73c6;
+          font-weight: 500;
+        }
       }
       & .macbuttons {
         display: flex;
@@ -61,7 +59,7 @@ export const StyledCodeBlock = styled.div`
           transition: all 0.3s;
         }
         &:hover {
-          background:rgba(255, 255, 255, 0.8);
+          background: rgba(255, 255, 255, 0.8);
           border-color: rgba(255, 255, 255, 0.8);
           transition: all 0.3s;
           & .copyCodeIcon {
@@ -85,5 +83,29 @@ export const StyledCodeBlock = styled.div`
     pre {
       border-radius: 0px;
     }
+    code {
+      background: none;
+    }
+  }
+`;
+
+export const StyledInfoBox = styled.div`
+  margin: 30px 0px;
+  padding: 10px 10px 10px 30px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-left: 4px solid rgb(210 212 254);
+  background-color: rgb(210 212 254 / 40%);
+  &.warning {
+    border-left: 4px solid rgb(255 167 0);
+    background-color: rgba(255, 167, 0, 0.2);
+  }
+  &.success {
+    border-left: 4px solid rgb(71 204 104);
+    background-color: rgb(71 204 104 / 20%);
+  }
+  &.error {
+    border-left: 4px solid rgb(242 50 50);
+    background-color: rgb(242 49 50 / 20%);
   }
 `;

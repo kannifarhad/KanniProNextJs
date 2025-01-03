@@ -58,6 +58,9 @@ export const StyledHeaderNavigation = styled.div`
       transform: translateY(0);
     }
   }
+  nav {
+    list-style: none;
+  }
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out forwards;
   }

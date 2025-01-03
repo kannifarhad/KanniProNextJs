@@ -1,12 +1,18 @@
-import { MDXRemote, MDXRemoteProps, } from "next-mdx-remote/rsc";
+import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import React, { memo } from "react";
-import { CompileOptions } from '@mdx-js/mdx';
-import { Code } from "@/components/ui/HTMLSerializer/MDXcomponents";
+import { CompileOptions } from "@mdx-js/mdx";
+import {
+  Code,
+  InfoBox,
+  RoundedImage,
+  CustomLink,
+} from "@/components/ui/HTMLSerializer/MDXcomponents";
 import remarkMdxCodeMeta from "remark-mdx-code-meta";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import Heading from "@/components/ui/HTMLSerializer/Heading";
 
 type ArrayElement<T> = T extends (infer U)[] ? U : never;
-type Pluggable = ArrayElement<NonNullable<CompileOptions['remarkPlugins']>>
+type Pluggable = ArrayElement<NonNullable<CompileOptions["remarkPlugins"]>>;
 
 const Content: React.FC<{ content?: string }> = ({ content }) => {
   if (!content) return null;
@@ -20,7 +26,17 @@ const Content: React.FC<{ content?: string }> = ({ content }) => {
             rehypePlugins: [],
           },
         }}
-        components={{ pre: Code } as MDXRemoteProps["components"]}
+        components={
+          {
+            pre: Code,
+            InfoBox,
+            Image: RoundedImage,
+            img: RoundedImage,
+            a: CustomLink,
+            h1: Heading('h1'),
+            h2: Heading('h2'),
+          } as MDXRemoteProps["components"]
+        }
       />
     </ErrorBoundary>
   );

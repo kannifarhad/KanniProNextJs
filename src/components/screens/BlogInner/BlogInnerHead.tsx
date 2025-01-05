@@ -2,6 +2,7 @@ import InnerLowerHead from "@/components/sections/InnerLowerHead";
 import ChipWithIcon from "@/components/ui/Chip";
 import { Article } from "@/types/api";
 import React from "react";
+import { getImagePath } from "@/helpers/common";
 
 type BlogInnerHeadProps = Pick<
   Article,
@@ -11,10 +12,11 @@ type BlogInnerHeadProps = Pick<
 const BlogInnerHead: React.FC<BlogInnerHeadProps> = ({
   title,
   description,
+  cover,
   categories = [],
 }) => {
   return (
-    <InnerLowerHead title={title} subhead={description}>
+    <InnerLowerHead title={title} subhead={description} image={getImagePath(cover.url)}>
       <div className="flex gap-2">
         <ChipWithIcon
           color="#fff"

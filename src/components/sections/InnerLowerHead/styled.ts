@@ -8,25 +8,52 @@ export const StyledLowerHead = styled.div`
     var(--border-radius);
   margin-bottom: 50px;
   & .head {
-    padding: 30px 0px;
+    padding-bottom: 10px;
+
     width: 100%;
-    max-width: 600px;
     color: var(--text-onlight-color);
     & .coverImage {
       overflow: hidden;
-      border-radius: var(--border-radius);
+      border-radius: 15px;
+      width: 400px;
+      position: relative;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       & img {
-        height: auto;
-        width: 300px;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
       }
     }
-    & h2 {
-      font-family: var(--font-bebas);
-      font-size: 50px;
-      line-height: 45px;
+    & .headtitles {
+      padding-top: 10px;
+      max-width: 600px;
+
+      & h2 {
+        font-family: var(--font-bebas);
+        font-size: 50px;
+        line-height: 50px;
+      }
+      & h6 {
+        font-size: 18px;
+        margin-bottom: 30px;
+      }
+      & .content {
+        /* margin-top: auto; */
+      }
     }
-    & h6 {
-      font-size: 18px;
+  }
+
+  @media screen and (max-width: 645px) {
+    border-top-right-radius: 0px;
+    & .head {
+      padding-top: 30px;
+      & .coverImage {
+       display: none;
+      }
     }
   }
 `;

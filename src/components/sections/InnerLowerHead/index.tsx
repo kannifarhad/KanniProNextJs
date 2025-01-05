@@ -7,6 +7,7 @@ interface InnerLowerHeadProps {
   subhead?: string;
   image?: string;
   children?: ReactNode;
+  contentBottom?: boolean
 }
 
 const InnerLowerHead: React.FC<InnerLowerHeadProps> = ({
@@ -14,6 +15,7 @@ const InnerLowerHead: React.FC<InnerLowerHeadProps> = ({
   subhead,
   children,
   image,
+  contentBottom,
 }) => {
   return (
     <StyledLowerHead className="innerHead">
@@ -23,12 +25,13 @@ const InnerLowerHead: React.FC<InnerLowerHeadProps> = ({
             <CustomImage src={image} />
           </div>
         )}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 headtitles">
           <h2>{title}</h2>
           <h6>{subhead}</h6>
+          {!contentBottom && <div className="content">{children}</div>}
         </div>
       </div>
-      <div className="content">{children}</div>
+      {contentBottom && <div className="content">{children}</div>}
     </StyledLowerHead>
   );
 };

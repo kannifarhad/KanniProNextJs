@@ -6,6 +6,7 @@ const createApolloClient = () => {
   return new ApolloClient({
     uri,
     cache: new InMemoryCache(),
+    ssrMode: true
   });
 };
 

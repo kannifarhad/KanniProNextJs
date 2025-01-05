@@ -11,6 +11,7 @@ export const StyledNotFoundContainer = styled.div`
     overflow: hidden;
     & .head {
       padding: 30px;
+      max-width: 600px;
       position: absolute;
       background: var(--head-background);
       z-index: 1;

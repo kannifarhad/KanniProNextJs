@@ -12,6 +12,7 @@ const page404 = () => {
       <InnerLowerHead
         title="ERROR 404: Well, This is Awkward…"
         subhead="The page you looking for has vanished into the digital void. But hey, my portfolio’s still here!"
+        contentBottom
       >
         <div className="catsronaut">
           <RenderModel

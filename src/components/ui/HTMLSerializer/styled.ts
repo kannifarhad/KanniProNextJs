@@ -79,12 +79,17 @@ export const StyledCodeBlock = styled.div`
       display: block;
       padding: 10px 15px;
       color: #abb2bf;
+      line-height: 15px;
     }
     pre {
       border-radius: 0px;
+      font-size: 15px;
+      line-height: 19px;
     }
     code {
       background: none;
+      font-size: 15px;
+      line-height: 19px;
     }
   }
 `;

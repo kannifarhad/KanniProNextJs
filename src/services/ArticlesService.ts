@@ -42,6 +42,12 @@ const GET_BLOG_ITEM_BY_SLUG_QUERY = gql`
       author {
         name
       }
+      relatedarticles {
+          slug
+          description
+          title,
+          createdAt
+      }
     }
   }
 `;
@@ -62,6 +68,7 @@ export const getArticleList = (
     variables: {
       pagination,
     },
+    fetchPolicy: "network-only",
   });
 };
 

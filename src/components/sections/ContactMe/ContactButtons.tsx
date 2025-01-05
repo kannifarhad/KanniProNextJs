@@ -3,7 +3,7 @@ import { memo } from "react";
 import Button from "@/components/ui/Button";
 
 const contactMe = {
-  whatsap: "+30 697 575 8827",
+  whatsap: "+306975758827",
   mail: "farhad@kanni.pro",
   subject: "Hi, Farhad",
   body: "Hi, Farhad",
@@ -30,7 +30,9 @@ const ContactButtons = () => {
         icon={{ name: "Whatsapp" }}
         handleClick={() => {
           window.open(
-            `mailto:${contactMe.mail}?&subject="${contactMe.subject}"&body="${contactMe.body}"`
+            `https://wa.me/${contactMe.whatsap}?text=${encodeURIComponent(
+              contactMe.subject
+            )}`
           );
         }}
       />

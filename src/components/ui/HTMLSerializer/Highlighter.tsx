@@ -43,7 +43,7 @@ export const Highlighter = memo(
         language={language.toLowerCase()}
         {...properties}
         showLineNumbers={isBashCode}
-        wrapLongLines
+        // wrapLongLines
         style={atomOneDark}
         lineProps={(line: number) => {
           const lineNumber = String(line);

@@ -115,6 +115,14 @@ export const StyledBlogContent = styled.article`
       font-weight: bold;
     }
   }
+  @media screen and (max-width: 645px) {
+    & .headingLinks {
+      display: none;
+    }
+    /* & .roundedImage {
+      margin: 30px -20px;
+    } */
+  }
 `;
 
 export const StyledRelatedArticles = styled.div`

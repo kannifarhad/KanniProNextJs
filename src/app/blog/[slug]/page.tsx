@@ -2,6 +2,7 @@ import BlogInner from "@/components/screens/BlogInner";
 import { getArticleItemBySlug } from "@/services/ArticlesService";
 import createApolloClient from "@/services/apolloClient";
 import { getImagePath } from "@/helpers/common";
+import generateMetadataHelper from "@/helpers/generateMetadata";
 
 export async function generateMetadata({
   params,
@@ -13,22 +14,12 @@ export async function generateMetadata({
   const {
     data: { articleBySlug },
   } = await getArticleItemBySlug(client, slug);
-
-  return {
+  return generateMetadataHelper({
     title: articleBySlug.title,
     description: articleBySlug.description,
-    openGraph: {
-      title: `${articleBySlug.title} | Farhad Aliyev`,
-      description: articleBySlug.description,
-      url: `/blog/${slug}`,
-      images: [
-        {
-          url: getImagePath(articleBySlug.cover.url),
-          alt: articleBySlug.title,
-        },
-      ],
-    },
-  };
+    image: getImagePath(articleBySlug.cover.url),
+    // url: `/blog/${slug}`,
+  });
 }
 
 export default async function BlogPage({

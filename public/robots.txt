@@ -1,0 +1,9 @@
+# robots.txt for kanni.pro
+User-agent: *
+Disallow: /_next/
+Disallow: /static/
+Disallow: /private/
+Allow: /
+
+# Sitemap
+Sitemap: https://kanni.pro/sitemap.xml

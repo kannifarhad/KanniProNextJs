@@ -26,7 +26,7 @@ const InnerLowerHead: React.FC<InnerLowerHeadProps> = ({
           </div>
         )}
         <div className="flex flex-col gap-2 headtitles">
-          <h2>{title}</h2>
+          <h1>{title}</h1>
           <h6>{subhead}</h6>
           {!contentBottom && <div className="content">{children}</div>}
         </div>

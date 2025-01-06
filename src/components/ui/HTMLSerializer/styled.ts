@@ -92,6 +92,10 @@ export const StyledCodeBlock = styled.div`
       line-height: 19px;
     }
   }
+
+  @media screen and (max-width: 645px) {
+    margin: 30px -20px;
+  }
 `;
 
 export const StyledInfoBox = styled.div`

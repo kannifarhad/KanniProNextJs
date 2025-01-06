@@ -17,7 +17,7 @@ const BlogInnerHead: React.FC<BlogInnerHeadProps> = ({
 }) => {
   return (
     <InnerLowerHead title={title} subhead={description} image={getImagePath(cover.url)}>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <ChipWithIcon
           color="#fff"
           icon={{

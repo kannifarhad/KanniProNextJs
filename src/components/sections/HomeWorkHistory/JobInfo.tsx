@@ -2,18 +2,23 @@ import React, { ReactNode } from "react";
 import { JobHistoryItemType } from "./JobListItem";
 import { StyledFullStory } from "./styled";
 import Tag from "@/components/ui/Tag";
+import { classNames } from "@/helpers/classNames";
 
 export type JobInfoProps = {
   fullstory: ReactNode;
   technologiesUsed?: string[];
+  isSelected: boolean;
 } & Omit<JobHistoryItemType, "isSelected">;
 
 const JobInfo: React.FC<JobInfoProps> = ({
   fullstory,
   technologiesUsed,
+  isSelected,
 }) => {
   return (
-    <StyledFullStory className="flex flex-col">
+    <StyledFullStory
+      className={classNames({ flex: true, "flex-col": true, hidden: !isSelected })}
+    >
       <div className="fullStoryContent">
         <h4>Responsibilities:</h4>
         <div className="fullStoryText">{fullstory}</div>

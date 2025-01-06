@@ -28,11 +28,12 @@ export const StyledLowerHead = styled.div`
         position: absolute;
       }
     }
+
     & .headtitles {
       padding-top: 10px;
       max-width: 600px;
 
-      & h2 {
+      & h1 {
         font-family: var(--font-bebas);
         font-size: 50px;
         line-height: 50px;
@@ -42,7 +43,15 @@ export const StyledLowerHead = styled.div`
         margin-bottom: 30px;
       }
       & .content {
-        /* margin-top: auto; */
+        & .ChipWithIcon {
+          border: 1px solid #ffffff;
+          & .title {
+            color : var(--text-onlight-color) !important;
+          }
+          & .icon {
+            background: #ffffff;
+          }
+        }
       }
     }
   }

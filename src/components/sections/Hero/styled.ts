@@ -40,7 +40,7 @@ export const StyledHeroInfo = styled.div`
       font-weight: 500;
       line-height: 100px;
     }
-    h3 {
+    h2 {
       color: #636363;
       font-family: var(--font-bebas);
       font-size: 50px;
@@ -62,7 +62,7 @@ export const StyledHeroInfo = styled.div`
     & .heading {
       left: 0px;
       padding-left: 30px;
-      h3 {
+      h2 {
         position: relative;
         margin-top: -50px;
         color: #fff;

@@ -28,7 +28,8 @@ const WorkHistory = () => {
           id="fullstoryWrapper"
           ref={workhistoryRef.current}
         >
-          <JobInfo {...workHistoryList[selected]} />
+          {workHistoryList.map((job, index)=><JobInfo {...job} key={job.name} isSelected={index === selected} />)}
+          
         </div>
         <div
           className="works-list min-[900px]:col-span-3 gap-2 flex flex-col"

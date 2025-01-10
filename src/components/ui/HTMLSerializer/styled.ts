@@ -118,3 +118,67 @@ export const StyledInfoBox = styled.div`
     background-color: rgb(242 49 50 / 20%);
   }
 `;
+
+export const StyledAccordion = styled.div`
+  --accordion-border-color: rgb(210 212 254);
+  --accordion-background-color: rgb(210 212 254 / 40%);
+  margin: 30px 0px;
+
+  &.warning {
+    --accordion-border-color: rgb(255 167 0);
+    --accordion-background-color: rgba(255, 167, 0, 0.2);
+  }
+  &.success {
+    --accordion-border-color: rgb(71 204 104);
+    --accordion-background-color: rgb(71 204 104 / 20%);
+  }
+  &.error {
+    --accordion-border-color: rgb(242 50 50);
+    --accordion-background-color: rgb(242 49 50 / 20%);
+  }
+  & > .title {
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid var(--accordion-border-color);
+    background-color: var(--accordion-background-color);
+    font-weight: 800;
+    font-size: 20px;
+    user-select: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    & .arrow {
+      transform: rotate(-90deg);
+      background: var(--accordion-border-color);
+      border-radius: 50%;
+      padding: 8px;
+      & svg, path {
+        fill: var(--background);
+      }
+    }
+  }
+  & > .content {
+    border: 1px solid var(--accordion-border-color);
+    background-color: var(--accordion-background-color);
+    border-top: none;
+    overflow: hidden;
+    margin: 0px;
+    padding: 10px 15px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: none;
+  }
+  &.isOpen {
+    & > .title {
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+      & .arrow {
+        transform: rotate(0deg);
+      }
+    }
+    & > .content {
+      display: block;
+    }
+  }
+`;

@@ -37,6 +37,7 @@ export const StyledBlogItem = styled.article`
         position: relative;
         padding-right: 10px; /* Add space for the circle */
         font-size: 14px;
+        line-height: 16px;
         margin-right: 10px;
         border-radius: 10px;
         &:not(:last-child)::after {

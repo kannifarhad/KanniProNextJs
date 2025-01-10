@@ -3,6 +3,7 @@ import ChipWithIcon from "@/components/ui/Chip";
 import { Article } from "@/types/api";
 import React from "react";
 import { getImagePath } from "@/helpers/common";
+import formatDate from "@/helpers/formatDate";
 
 type BlogInnerHeadProps = Pick<
   Article,
@@ -14,6 +15,7 @@ const BlogInnerHead: React.FC<BlogInnerHeadProps> = ({
   description,
   cover,
   categories = [],
+  createdAt
 }) => {
   return (
     <InnerLowerHead title={title} subhead={description} image={getImagePath(cover.url)}>
@@ -26,7 +28,7 @@ const BlogInnerHead: React.FC<BlogInnerHeadProps> = ({
             width: "16px",
             style: { fill: "#6d73c6" },
           }}
-          title="20 Nov. 2024"
+          title={formatDate(createdAt)}
         />
         {categories && (
           <ChipWithIcon

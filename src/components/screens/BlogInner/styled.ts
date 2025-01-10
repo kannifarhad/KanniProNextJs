@@ -68,12 +68,12 @@ export const StyledBlogContent = styled.article`
 
   & code {
     font-family: "Courier New", Courier, monospace;
-    background-color: #f4f4f4;
+    background-color: rgb(136 136 136 / 57%);
     border-radius: 3px;
   }
 
   & pre {
-    background-color: #f4f4f4;
+    background-color: rgb(136 136 136 / 57%);
     padding: 1em;
     overflow-x: auto;
     border-radius: 5px;
@@ -115,13 +115,17 @@ export const StyledBlogContent = styled.article`
       font-weight: bold;
     }
   }
+  & iframe {
+    margin: 30px 0px;
+  }
   @media screen and (max-width: 645px) {
     & .headingLinks {
       display: none;
     }
-    /* & .roundedImage {
+    & iframe {
       margin: 30px -20px;
-    } */
+      width: calc(100% + 40px) !important;
+    }
   }
 `;
 
@@ -148,6 +152,7 @@ export const StyledRelatedArticles = styled.div`
     & .title {
       font-weight: 800;
       font-size: 18px;
+      line-height: 22px;
     }
     & .description {
       margin-top: 5px;

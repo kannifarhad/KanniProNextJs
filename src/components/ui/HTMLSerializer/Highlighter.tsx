@@ -1,6 +1,6 @@
 "use client";
 import { memo } from "react";
-import SyntaxHighlighter from "react-syntax-highlighter";
+import SyntaxHighlighter, { createElement } from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 type ComponentWithChildProps<P> = React.PropsWithChildren<P>;
@@ -35,15 +35,15 @@ export const Highlighter = memo(
     const ADDED = add.replace(" ", "").split(",");
     const REMOVED = remove.replace(" ", "").split(",");
     const HIGHLIGHTED = higlight.replace(" ", "").split(",");
-    const language = /language-(\w+)/.exec(className || "")?.[1] || "javascript";
-    const isBashCode = language !== 'bash' && language !== 'shell';
-    
+    const language =
+      /language-(\w+)/.exec(className || "")?.[1] || "javascript";
+    const isBashCode = language !== "bash" && language !== "shell";
     return (
       <SyntaxHighlighter
         language={language.toLowerCase()}
         {...properties}
         showLineNumbers={isBashCode}
-        // wrapLongLines
+        // wrapLongLines={Boolean(ADDED.length) || Boolean(REMOVED.length) || Boolean(HIGHLIGHTED.length) }
         style={atomOneDark}
         lineProps={(line: number) => {
           const lineNumber = String(line);
@@ -56,6 +56,38 @@ export const Highlighter = memo(
             style.backgroundColor = "#bc91fc55";
           }
           return { style };
+        }}
+
+        renderer={({ rows, stylesheet, useInlineStyles }) => {
+          return rows.map((row, index) => {
+            const children = row.children;
+            const lineNumberElement = children?.shift();
+
+            /**
+             * We will take current structure of the rows and rebuild it
+             * according to the suggestion here https://github.com/react-syntax-highlighter/react-syntax-highlighter/issues/376#issuecomment-1246115899
+             */
+            if (lineNumberElement) {
+              row.children = [
+                lineNumberElement,
+                {
+                  children,
+                  properties: {
+                    className: [],
+                  },
+                  tagName: "span",
+                  type: "element",
+                },
+              ];
+            }
+
+            return createElement({
+              node: row,
+              stylesheet,
+              useInlineStyles,
+              key: index,
+            });
+          });
         }}
       >
         {codeString}

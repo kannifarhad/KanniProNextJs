@@ -17,6 +17,7 @@ import Pen from "./icons/pen";
 import Copy from "./icons/copy";
 import Telephone from "./icons/telephone";
 import Filledpaper from "./icons/filledpaper";
+import Arrow from "./icons/arrow";
 
 const iconMap = {
   Close,
@@ -34,7 +35,8 @@ const iconMap = {
   Pen,
   Copy,
   Telephone,
-  Filledpaper
+  Filledpaper,
+  Arrow
 };
 
 type IconName = keyof typeof iconMap;

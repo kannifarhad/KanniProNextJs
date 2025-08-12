@@ -8,9 +8,11 @@ export const metadata = generateMetadata({
     "Because spending countless hours debugging and perfecting something no one asked for is definitely my idea of fun. 🤷🏻‍♂️",
 });
 
+export const revalidate = 60; // re-fetch every 60s
+
 const BlogPage = async () => {
   const client = await createApolloClient();
-  const { data } = await getArticleList(client, { page: 1, pageSize: 20 });
+  const { data } = await getArticleList(client, { page: 1, pageSize: 50 });
   return (
     <>
       <Blog blogList={data.articles} />;

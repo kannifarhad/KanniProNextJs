@@ -4,10 +4,7 @@ import { SochialNetworkItem } from "./SochiualNetwork";
 
 type SectionsItems = "primarySkills" | "secondarySkills" | "aboutMe";
 
-export const blocksInfo: Record<
-  SectionsItems,
-  RoundBlockProps & { skills?: TagProps[] }
-> = {
+export const blocksInfo: Record<SectionsItems, RoundBlockProps & { skills?: TagProps[] }> = {
   primarySkills: {
     heading: {
       title: "Primary Skills",
@@ -16,7 +13,7 @@ export const blocksInfo: Record<
     skills: [
       {
         title: "TypeScript",
-        tooltip: "6 years of experience",
+        tooltip: "9 years of experience",
       },
       {
         title: "JavaScript",
@@ -24,27 +21,27 @@ export const blocksInfo: Record<
       },
       {
         title: "ReactJs",
-        tooltip: "7 years of experience",
+        tooltip: "10 years of experience",
       },
       {
         title: "Redux",
-        tooltip: "7 years of experience",
+        tooltip: "8 years of experience",
       },
       {
         title: "NextJs",
-        tooltip: "7 years of experience",
+        tooltip: "4 years of experience",
       },
       {
         title: "PHP",
-        tooltip: "5 years of experience",
+        tooltip: "6 years of experience",
       },
       {
         title: "NodeJs",
-        tooltip: "7 years of experience",
+        tooltip: "10 years of experience",
       },
       {
         title: "NestJs",
-        tooltip: "7 years of experience",
+        tooltip: "4 years of experience",
       },
       {
         title: "React Native",
@@ -52,11 +49,11 @@ export const blocksInfo: Record<
       },
       {
         title: "SQL",
-        tooltip: "7 years of experience",
+        tooltip: "10 years of experience",
       },
       {
         title: "PostgreSQL",
-        tooltip: "5 years of experience",
+        tooltip: "6 years of experience",
       },
       {
         title: "MongoDB",
@@ -80,7 +77,7 @@ export const blocksInfo: Record<
       },
       {
         title: "REST",
-        tooltip: "8 years of experience",
+        tooltip: "12 years of experience",
       },
       {
         title: "GIT",
@@ -132,7 +129,7 @@ export const blocksInfo: Record<
       },
       {
         title: "AWS",
-        tooltip: "2 years of experience",
+        tooltip: "3 years of experience",
       },
       {
         title: "Vue",
@@ -176,15 +173,23 @@ export const blocksInfo: Record<
       },
       {
         title: "ThreeJs",
-        tooltip: "1 years of experience",
+        tooltip: "1 year of experience",
       },
       {
         title: "WEB3",
-        tooltip: "1 years of experience",
+        tooltip: "1 year of experience",
       },
       {
         title: "UI&UX Design",
         tooltip: "6 years of experience",
+      },
+      {
+        title: "LLM/AI",
+        tooltip: "2 years of experience",
+      },
+      {
+        title: "LangChain/LangGraph",
+        tooltip: "1 year of experience",
       },
     ],
   },

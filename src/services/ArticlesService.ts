@@ -7,8 +7,8 @@ import {
 } from "@apollo/client";
 
 const GET_BLOG_LIST_QUERY = gql`
-  query Articles($pagination: PaginationArg) {
-    articles(pagination: $pagination) {
+  query Articles($pagination: PaginationArg,  $articlesSort: [String]) {
+    articles(pagination: $pagination, sort: $articlesSort) {
       documentId
       title
       slug
@@ -67,8 +67,8 @@ export const getArticleList = (
     query: GET_BLOG_LIST_QUERY,
     variables: {
       pagination,
+      articlesSort: 'createdAt:desc',
     },
-    fetchPolicy: "network-only",
   });
 };
 

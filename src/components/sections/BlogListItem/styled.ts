@@ -33,7 +33,7 @@ export const StyledBlogItem = styled.article`
       display: flex;
       align-items: center;
       gap: 8px; /* Optional spacing between spans */
-      span {
+      a {
         position: relative;
         padding-right: 10px; /* Add space for the circle */
         font-size: 14px;
@@ -50,6 +50,9 @@ export const StyledBlogItem = styled.article`
           height: 6px;
           background-color: black;
           border-radius: 50%;
+        }
+        &:hover {
+          color: var(--card-bg3)
         }
       }
     }

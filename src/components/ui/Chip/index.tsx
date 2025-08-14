@@ -3,7 +3,7 @@ import { StyledChipWithIcon } from "./styled";
 import Icon, { IconProps } from "../CustomIcon";
 
 export type ChipWithIconProps = {
-  title: string;
+  title: string | ReactNode;
   color?: string;
   icon: IconProps;
 };

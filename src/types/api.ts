@@ -4,7 +4,7 @@ export type ArticleListItem = {
   slug: string;
   createdAt: string;
   description: string;
-  categories: Array<{ name: string }>;
+  categories: Array<{ name: string, slug: string }>;
   cover: {
     url: string;
   };

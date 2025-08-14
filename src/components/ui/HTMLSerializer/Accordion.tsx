@@ -7,16 +7,16 @@ import Icon from "../CustomIcon";
 interface AccordionProps {
   children: React.ReactNode;
   type?: string;
-  title: string;
+  title: string | React.ReactNode;
   toolbar?: React.ReactNode;
-  className: string;
+  className?: string;
 }
 
 // Accordion component factory
 // eslint-disable-next-line react/display-name
 const Accordion = ({
   children,
-  className,
+  className = "",
   title,
   type = "warning",
 }: AccordionProps) => {
@@ -36,7 +36,7 @@ const Accordion = ({
         <span className="arrow">
           <Icon name="Arrow" style={{ width: "12px", height: "12px" }} />
         </span>
-        <span> {title}</span>
+        <span>{title}</span>
       </div>
       <div className="content">{children}</div>
     </StyledAccordion>

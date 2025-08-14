@@ -42,6 +42,28 @@ export const StyledChipWithIcon = styled.div`
     padding: 0px 9px 0px 7px;
     color: var(--foreground);
     font-size: 15px;
+    a {
+      position: relative;
+      padding: 0px 10px; /* Add space for the circle */
+      font-size: 14px;
+      line-height: 16px;
+      margin-right: 10px;
+      border-radius: 10px;
+      &:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: -5px;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 6px;
+        background-color: black;
+        border-radius: 50%;
+      }
+      &:hover {
+        color: var(--card-bg3);
+      }
+    }
   }
   &:hover {
     opacity: 1;

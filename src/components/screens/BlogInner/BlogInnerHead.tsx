@@ -4,19 +4,11 @@ import { Article } from "@/types/api";
 import React from "react";
 import { getImagePath } from "@/helpers/common";
 import formatDate from "@/helpers/formatDate";
+import Link from "next/link";
 
-type BlogInnerHeadProps = Pick<
-  Article,
-  "title" | "description" | "categories" | "createdAt" | "cover"
->;
+type BlogInnerHeadProps = Pick<Article, "title" | "description" | "categories" | "createdAt" | "cover">;
 
-const BlogInnerHead: React.FC<BlogInnerHeadProps> = ({
-  title,
-  description,
-  cover,
-  categories = [],
-  createdAt
-}) => {
+const BlogInnerHead: React.FC<BlogInnerHeadProps> = ({ title, description, cover, categories = [], createdAt }) => {
   return (
     <InnerLowerHead title={title} subhead={description} image={getImagePath(cover.url)}>
       <div className="flex flex-wrap gap-2">
@@ -39,7 +31,15 @@ const BlogInnerHead: React.FC<BlogInnerHeadProps> = ({
               style: { fill: "#6d73c6" },
               width: "16px",
             }}
-            title={categories.map((item) => item.name).join(", ")}
+            title={
+              <>
+                {categories.map((item) => (
+                  <Link href={`/blog/category/${item.slug}`} key={item.name}>
+                    {item.name}
+                  </Link>
+                ))}
+              </>
+            }
           />
         )}
       </div>

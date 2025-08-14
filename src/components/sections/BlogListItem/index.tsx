@@ -13,7 +13,7 @@ const BlogListItem = ({ title, slug, categories, cover }: ArticleListItem) => {
         <div className="shortStory">
           <div className="categoryList">
             {categories?.map((cat) => (
-              <span key={cat.name}>{cat.name}</span>
+              <Link href={`/blog/category/${cat.slug}`} key={cat.name}>{cat.name}</Link>
             ))}
           </div>
           <div className="readmore">{title}</div>

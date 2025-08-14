@@ -11,6 +11,7 @@ import remarkMdxCodeMeta from "remark-mdx-code-meta";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import Heading from "@/components/ui/HTMLSerializer/Heading";
 import Accordion from "./Accordion";
+import Badge from "./Badge";
 
 type ArrayElement<T> = T extends (infer U)[] ? U : never;
 type Pluggable = ArrayElement<NonNullable<CompileOptions["remarkPlugins"]>>;
@@ -32,6 +33,7 @@ const Content: React.FC<{ content?: string }> = ({ content }) => {
             pre: Code,
             InfoBox,
             Accordion,
+            Badge,
             Image: RoundedImage,
             img: RoundedImage,
             a: CustomLink,

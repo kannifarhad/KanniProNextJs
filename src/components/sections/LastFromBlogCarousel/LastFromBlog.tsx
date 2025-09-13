@@ -4,6 +4,7 @@ import { StyledBlogMainBlock, StyledLastFromBlogContainer } from "./styled";
 import BlogListCarousel from "./BlogListCarousel";
 import createApolloClient from "@/services/apolloClient";
 import { getArticleList } from "@/services/ArticlesService";
+import OpacityBottomToTop from "@/components/ui/AnimatiedBlocks/OpacityBottomToTop";
 
 const BlogList = async () => {
   let data = null;
@@ -27,27 +28,26 @@ const BlogList = async () => {
   }
 
   return (
-    <StyledLastFromBlogContainer className="flex">
-      <StyledBlogMainBlock>
-        <div className="heading">
-          <h2>
-            Random things I built,
-            <br /> develop <br />
-            and care about
-          </h2>
-          <p>
-            <i>
-              Because spending countless hours debugging and perfecting
-              something no one asked for is definitely my idea of fun.{" "}
-            </i>
-            <span>🤷🏻‍♂️</span>
-          </p>
+    <OpacityBottomToTop threshold={0.9}>
+      <StyledLastFromBlogContainer className="flex">
+        <StyledBlogMainBlock>
+          <div className="heading">
+            <h2>
+              Random things I built,
+              <br /> develop <br />
+              and care about
+            </h2>
+            <p>
+              <i>Because spending countless hours debugging and perfecting something no one asked for is definitely my idea of fun. </i>
+              <span>🤷🏻‍♂️</span>
+            </p>
+          </div>
+        </StyledBlogMainBlock>
+        <div className="flex-1">
+          <BlogListCarousel blogList={data?.articles || []} />
         </div>
-      </StyledBlogMainBlock>
-      <div className="flex-1">
-        <BlogListCarousel blogList={data?.articles || []} />
-      </div>
-    </StyledLastFromBlogContainer>
+      </StyledLastFromBlogContainer>
+    </OpacityBottomToTop>
   );
 };
 

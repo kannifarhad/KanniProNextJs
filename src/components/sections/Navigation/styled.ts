@@ -15,12 +15,8 @@ export const StyledHeaderRight = styled.div`
     left: 0px;
     width: calc(var(--pillar-size) * 2);
     height: calc(var(--pillar-size) * 2);
-    background: radial-gradient(
-        circle at 100% 0%,
-        transparent var(--pillar-size),
-        var(--head-background) calc(var(--pillar-size) + 1px)
-      )
-      0px var(--pillar-size) / calc(100% - var(--pillar-size)) 100% no-repeat;
+    background: radial-gradient(circle at 100% 0%, transparent var(--pillar-size), var(--head-background) calc(var(--pillar-size) + 1px)) 0px var(--pillar-size) / calc(100% - var(--pillar-size)) 100%
+      no-repeat;
   }
   button {
     z-index: 10;
@@ -41,7 +37,7 @@ export const StyledHeaderLeft = styled.div`
   & .logo {
     font-weight: 600;
     font-family: var(--font-bebas);
-    font-size: 27px;
+    font-size: 29px;
     margin-right: 50px;
     color: var(--dark-grey);
   }
@@ -60,6 +56,7 @@ export const StyledHeaderNavigation = styled.div`
   }
   nav {
     list-style: none;
+    margin-bottom: 5px;
   }
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out forwards;
@@ -67,7 +64,7 @@ export const StyledHeaderNavigation = styled.div`
   & .nav-link {
     position: relative;
     overflow: hidden;
-    font-size: 17px;
+    font-size: 18px;
     color: var(--text-onlight-color);
   }
   & .nav-link::after {

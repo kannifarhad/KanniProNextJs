@@ -3,6 +3,7 @@ import Lamps from "./Lamps";
 import ContactButtons from "./ContactButtons";
 import Icon from "@/components/ui/CustomIcon";
 import { StyledContactMe } from "./styled";
+import MaskedText from "@/components/ui/AnimatiedBlocks/MaskedText";
 
 const ContactMe = () => {
   return (
@@ -17,7 +18,9 @@ const ContactMe = () => {
             }}
             className="connect-image"
           />
-          <h2 className="text-7xl head">Tell me about your next project</h2>
+          <h2 className="text-7xl head">
+            <MaskedText text="Tell me about your next project" />
+          </h2>
         </div>
         <Lamps />
         <ContactButtons />

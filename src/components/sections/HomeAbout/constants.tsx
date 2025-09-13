@@ -17,7 +17,7 @@ export const blocksInfo: Record<SectionsItems, RoundBlockProps & { skills?: TagP
       },
       {
         title: "JavaScript",
-        tooltip: "11 years of experience",
+        tooltip: "12 years of experience",
       },
       {
         title: "ReactJs",
@@ -97,11 +97,11 @@ export const blocksInfo: Record<SectionsItems, RoundBlockProps & { skills?: TagP
       },
       {
         title: "HTML",
-        tooltip: "12 years of experience",
+        tooltip: "13 years of experience",
       },
       {
         title: "CSS /PostCss/ Scss",
-        tooltip: "12 years of experience",
+        tooltip: "13 years of experience",
       },
       {
         title: "JQuery",
@@ -125,7 +125,7 @@ export const blocksInfo: Record<SectionsItems, RoundBlockProps & { skills?: TagP
       },
       {
         title: "SpringBoot",
-        tooltip: "7 years of experience",
+        tooltip: "3 years of experience",
       },
       {
         title: "AWS",

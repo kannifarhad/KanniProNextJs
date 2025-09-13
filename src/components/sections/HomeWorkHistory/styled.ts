@@ -34,6 +34,7 @@ export const StyledFullStory = styled.div`
   border-radius: var(--border-radius);
   background: var(--workstory-card-background);
   transition: all 0.2s ease-in-out;
+  height: 100%;
   & h4 {
     font-weight: 800;
     margin-bottom: 10px;
@@ -98,6 +99,8 @@ export const StyledJobItem = styled.div`
   border: 1px solid var(--grey-transparent);
   height: 115px;
   filter: none;
+  margin: 10px 0px 0px 10px;
+  background: var(--background);
   &.workActive {
     margin-left: -45px;
     background: var(--workstory-card-background);

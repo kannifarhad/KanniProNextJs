@@ -7,6 +7,8 @@ export const StyledChipWithIcon = styled.div`
   border: 1px solid #bcbcbca1;
   border-radius: 35px;
   padding: 2px;
+  display: flex;
+  
   & > span {
     border-radius: 50px;
     display: flex;
@@ -42,6 +44,7 @@ export const StyledChipWithIcon = styled.div`
     padding: 0px 9px 0px 7px;
     color: var(--foreground);
     font-size: 15px;
+    word-wrap: break-word;
     a {
       position: relative;
       padding: 0px 10px; /* Add space for the circle */

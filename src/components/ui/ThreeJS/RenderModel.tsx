@@ -18,7 +18,7 @@ const RenderModel: React.FC<RenderModelProps> = ({
   canvasProps = {},
 }) => {
   return (
-    <Canvas className={className} shadows={false} dpr={[1, 2]} {...canvasProps}>
+    <Canvas className={className} shadows={true} dpr={[1, 2]} {...canvasProps}>
       <Suspense fallback={null}>{children}</Suspense>
       <Environment preset={ligtpreset} />
     </Canvas>

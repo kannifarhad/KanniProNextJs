@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import React, { memo, useRef, useState } from "react";
+import React, { memo, useState } from "react";
 import JobListItem from "./JobListItem";
 import JobInfo from "./JobInfo";
 import { workHistoryList } from "./constants";

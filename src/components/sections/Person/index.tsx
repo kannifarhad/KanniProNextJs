@@ -6,11 +6,11 @@ import { useCallback, useRef, useState } from "react";
 import { useAppDispatch } from "@/store";
 import { addHint } from "@/store/reducers/common";
 import { classNames } from "@/helpers/classNames";
-import { PersonControls } from "@/components/models/Person";
+import { PersonControls } from "@/components/models/Mascot";
 import useThrottle from "@/hooks/useThrottle";
 // import * as THREE from "three";
 
-const PersonModel = dynamic(() => import("@/components/models/Person"), {
+const PersonModel = dynamic(() => import("@/components/models/Mascot"), {
   ssr: false,
 });
 
@@ -45,7 +45,7 @@ const Person = () => {
         height: "400px",
         position: "absolute",
         bottom: "-50px",
-        left: "700px",
+        left: "600px",
         zIndex: 5,
         //  border: "1px solid #fff"
       }}
@@ -71,6 +71,15 @@ const Person = () => {
         </button>
         <button type="submit" className="btn p-2" onClick={() => mascotRef.current?.thumbsUp()}>
           Thumbs
+        </button>
+        <button type="submit" className="btn p-2" onClick={() => mascotRef.current?.initPerson()}>
+          Init
+        </button>
+        <button type="submit" className="btn p-2" onClick={() => mascotRef.current?.standUp()}>
+          standUp
+        </button>
+        <button type="submit" className="btn p-2" onClick={() => mascotRef.current?.initFallScenario()}>
+          Init fall
         </button>
       </div>
 

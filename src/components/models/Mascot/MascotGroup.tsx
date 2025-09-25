@@ -1,14 +1,33 @@
+// Explicitly enable any here because i dont want to install additional library for gltf types.
+// We dont have strong typing in ThreeJs yet.
+// Explicitly enable any here because i dont want to install additional library for gltf types.
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import * as THREE from "three";
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 
-// Explicitly enable any here because i dont want to install additional library for gltf types.
-// We dont have strong typing in ThreeJs yet.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const MascotGroup = ({ gltf }: { gltf: any }) => {
+export interface MascotGroupRef {
+  hide: () => void;
+  show: () => void;
+  toggle: () => void;
+}
+
+export const MascotGroup = forwardRef<MascotGroupRef, { gltf: any }>(({ gltf }, ref) => {
   const groupRef = useRef<THREE.Group>(null);
   const { nodes, materials } = gltf;
+
+  useImperativeHandle(ref, () => ({
+    hide: () => {
+      if (groupRef.current) groupRef.current.visible = false;
+    },
+    show: () => {
+      if (groupRef.current) groupRef.current.visible = true;
+    },
+    toggle: () => {
+      if (groupRef.current) groupRef.current.visible = !groupRef.current.visible;
+    },
+  }));
 
   useEffect(() => {
     if (!groupRef.current) return;
@@ -16,10 +35,8 @@ export const MascotGroup = ({ gltf }: { gltf: any }) => {
     const clipPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
 
     groupRef.current.traverse((child) => {
-      // Type guard: only apply to Mesh or SkinnedMesh
       if ((child as THREE.Mesh).isMesh || (child as THREE.SkinnedMesh).isSkinnedMesh) {
         const mesh = child as THREE.Mesh | THREE.SkinnedMesh;
-
         if (Array.isArray(mesh.material)) {
           mesh.material.forEach((mat) => {
             mat.clippingPlanes = [clipPlane];
@@ -246,6 +263,6 @@ export const MascotGroup = ({ gltf }: { gltf: any }) => {
       </group>
     </group>
   );
-};
-
+});
+MascotGroup.displayName = "MascotGroup";
 export default memo(MascotGroup);

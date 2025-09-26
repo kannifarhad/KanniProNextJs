@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  useRef,
-  useState,
-  forwardRef,
-  useImperativeHandle,
-  memo,
-  useEffect,
-} from "react";
+import { useRef, useState, forwardRef, useImperativeHandle, memo, useEffect } from "react";
 import { Mesh, Vector3, Plane, Color, Euler } from "three";
 import { extend, useFrame, useThree } from "@react-three/fiber";
 import { shaderMaterial } from "@react-three/drei";
@@ -99,16 +92,14 @@ export const MeshPortal = forwardRef<MeshPortalRef>((_, ref) => {
 
       // --- setup clipping plane ---
       const normal = new Vector3(0, 0, 1);
-      const euler = new Euler(...(merged.rotation ?? defaultProps.rotation));
+      const euler = new Euler(...((merged.rotation ?? defaultProps.rotation) as [number, number, number]));
       normal.applyEuler(euler);
 
       if (merged.hide === "above") {
         normal.negate();
       }
 
-      clippingPlane.current = new Plane(normal, 0).translate(
-        new Vector3(...(merged.position ?? defaultProps.position))
-      );
+      clippingPlane.current = new Plane(normal, 0).translate(new Vector3(...((merged.position ?? defaultProps.position) as [number, number, number])));
 
       gl.clippingPlanes = clippingPlane.current ? [clippingPlane.current] : [];
     },
@@ -148,12 +139,7 @@ export const MeshPortal = forwardRef<MeshPortalRef>((_, ref) => {
   });
 
   return (
-    <mesh
-      ref={meshRef}
-      visible={false}
-      position={config.position}
-      rotation={config.rotation}
-    >
+    <mesh ref={meshRef} visible={false} position={config.position} rotation={config.rotation}>
       <planeGeometry args={[config.size ?? 4, config.size ?? 4, 64, 64]} />
       {/* @ts-expect-error extended shader material */}
       <portalMaterial ref={materialRef} uRadius={0.0} />

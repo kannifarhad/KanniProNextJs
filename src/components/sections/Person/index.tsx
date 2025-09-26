@@ -23,7 +23,7 @@ const Person = () => {
 
   // throttle the animation trigger
   const waveAction = useThrottle(() => {
-    // mascotRef.current?.runWave();
+    mascotRef.current?.runWave();
   }, 2000);
 
   const handleHoverOn = useCallback(() => {
@@ -41,16 +41,16 @@ const Person = () => {
     <div
       className="person"
       style={{
-        width: "400px",
+        width: "300px",
         height: "400px",
         position: "absolute",
-        bottom: "-50px",
-        left: "600px",
+        bottom: "-170px",
+        left: "700px",
         zIndex: 5,
-        //  border: "1px solid #fff"
+        //  border: "1px solid #f00"
       }}
     >
-      <div>
+      {/* <div>
         <button type="submit" className="btn p-2" onClick={() => mascotRef.current?.runWave()}>
           Wave
         </button>
@@ -81,7 +81,7 @@ const Person = () => {
         <button type="submit" className="btn p-2" onClick={() => mascotRef.current?.initFallScenario()}>
           Init fall
         </button>
-      </div>
+      </div> */}
 
       <RenderModel
         canvasProps={{
@@ -91,7 +91,7 @@ const Person = () => {
         ligtpreset="city"
         className={classNames({ hero3d: true, pointerCursor: hover })}
       >
-        {/* <directionalLight castShadow position={[5, 10, 5]} intensity={1.2} /> */}
+        <directionalLight castShadow position={[5, 10, 5]} intensity={1.2} />
 
         <group position={[0, 0, 0]} scale={0.8}>
           <PersonModel

@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { forwardRef, useImperativeHandle, useRef, useEffect, memo } from "react";
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, memo, useCallback } from "react";
 import * as THREE from "three";
 import { useFrame, useThree, extend } from "@react-three/fiber";
 import { PortalMaterial } from "./PortalMaterial";
 
 extend({ PortalMaterial });
 
-export interface PortalRef {
+export interface MascotGroupRef {
   open: (cfg?: PortalConfig) => void;
   close: () => void;
   hide: () => void;
@@ -33,7 +33,7 @@ const DEFAULT: Required<PortalConfig> = {
 };
 const DURATION = 0.45;
 
-export const PortalWithMascot = forwardRef<PortalRef, { gltf: any }>(({ gltf }, ref) => {
+export const MascotGroup = forwardRef<MascotGroupRef, { gltf: any }>(({ gltf }, ref) => {
   const { nodes } = gltf;
   const { gl, camera } = useThree();
   const portalMeshRef = useRef<THREE.Mesh | null>(null);
@@ -55,7 +55,7 @@ export const PortalWithMascot = forwardRef<PortalRef, { gltf: any }>(({ gltf }, 
     };
   }, [gl]);
 
-  function applyPlaneToMascotMaterials(plane: THREE.Plane) {
+  const applyPlaneToMascotMaterials = useCallback((plane: THREE.Plane) => {
     modifiedMaterials.current.clear();
     if (!mascotGroupRef.current) return;
 
@@ -72,9 +72,9 @@ export const PortalWithMascot = forwardRef<PortalRef, { gltf: any }>(({ gltf }, 
         });
       }
     });
-  }
+  }, []);
 
-  function removeClippingFromMaterials() {
+  const removeClippingFromMaterials = useCallback(() => {
     modifiedMaterials.current.forEach((mat) => {
       if (!mat) return;
       try {
@@ -85,7 +85,7 @@ export const PortalWithMascot = forwardRef<PortalRef, { gltf: any }>(({ gltf }, 
     });
     modifiedMaterials.current.clear();
     planeRef.current = null;
-  }
+  }, []);
 
   useImperativeHandle(ref, () => ({
     hide: () => {
@@ -165,14 +165,12 @@ export const PortalWithMascot = forwardRef<PortalRef, { gltf: any }>(({ gltf }, 
 
   return (
     <group>
-      {/* Portal plane visual */}
       <mesh ref={portalMeshRef} castShadow={false} receiveShadow={false} visible={false}>
         <planeGeometry args={[1, 1, 128, 128]} />
         {/* @ts-expect-error extended shader material */}
         <portalMaterial ref={portalMatRef} uRadius={0} uColor={[0, 1, 0]} depthWrite={true} />
       </mesh>
 
-      {/* Mascot group */}
       <group ref={mascotGroupRef} name="Scene">
         <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.001}>
           {Object.values(nodes)
@@ -187,5 +185,5 @@ export const PortalWithMascot = forwardRef<PortalRef, { gltf: any }>(({ gltf }, 
   );
 });
 
-PortalWithMascot.displayName = "PortalWithMascot";
-export default memo(PortalWithMascot);
+MascotGroup.displayName = "MascotGroup";
+export default memo(MascotGroup);

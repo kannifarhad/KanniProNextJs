@@ -33,7 +33,7 @@ const DEFAULT: Required<PortalConfig> = {
 };
 const DURATION = 0.45;
 
-export const MascotGroup = forwardRef<MascotGroupRef, { gltf: any }>(({ gltf }, ref) => {
+export const MascotGroup = forwardRef<MascotGroupRef, { gltf: any; defaultVisibile: boolean }>(({ gltf, defaultVisibile }, ref) => {
   const { nodes } = gltf;
   const { gl, camera } = useThree();
   const portalMeshRef = useRef<THREE.Mesh | null>(null);
@@ -171,7 +171,7 @@ export const MascotGroup = forwardRef<MascotGroupRef, { gltf: any }>(({ gltf }, 
         <portalMaterial ref={portalMatRef} uRadius={0} uColor={[0, 1, 0]} depthWrite={true} />
       </mesh>
 
-      <group ref={mascotGroupRef} name="Scene">
+      <group ref={mascotGroupRef} name="Scene" visible={defaultVisibile}>
         <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.001}>
           {Object.values(nodes)
             .filter((n: any) => n.isMesh || n.isSkinnedMesh)

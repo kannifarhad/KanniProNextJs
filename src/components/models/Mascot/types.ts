@@ -3,6 +3,7 @@ import { ANIMATIONS } from "./constants";
 export type PersonProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
+  defaultVisibile?: boolean;
 };
 
 export type PersonControls = {

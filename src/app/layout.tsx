@@ -24,7 +24,7 @@ export const RootLayout: FC<PropsWithChildren> = ({ children }) => {
         <StoreProvider>
           <StyledComponentsRegistry>
             <div id="myportal" />
-            <div className="flex flex-col container xl mx-auto lg:w-full">
+            <div className="flex flex-col container xl mx-auto lg:w-full relative">
               <Header />
               {children}
               <MouseMessages />

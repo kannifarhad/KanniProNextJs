@@ -43,7 +43,7 @@ const WorkHistory = () => {
       <h2 className="sectionHead">
         <MaskedText text="Work Experience" />
       </h2>
-      <WorkHistoryWrapper className="work-history gap-4 mt-2 min-[900px]:grid-cols-8 min-[900px]:grid ">
+      <WorkHistoryWrapper className="work-history gap-4 mt-2 min-[900px]:grid-cols-8 min-[900px]:grid">
         <motion.div
           id="fullstoryWrapper"
           style={{

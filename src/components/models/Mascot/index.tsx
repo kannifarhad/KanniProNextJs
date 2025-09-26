@@ -1,6 +1,6 @@
 "use client";
 import * as THREE from "three";
-import React, { useEffect, useImperativeHandle, forwardRef, useRef, memo, useCallback } from "react";
+import React, { useImperativeHandle, forwardRef, useRef, memo, useCallback } from "react";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { MascotGroup, MascotGroupRef } from "./MascotGroup";
 import { PersonControls, PersonProps, SequenceStep } from "./types";
@@ -8,10 +8,11 @@ import { ANIMATIONS, GLTF_PATH } from "./constants";
 import { generateFallScenario, generateInitPersonScenario, logInfo } from "./helpers";
 import { useAnimationRunners } from "./hooks/useAnimationRunners";
 export * from "./types";
+
 // Preload the model
 useGLTF.preload(GLTF_PATH);
 
-const PersonModel = forwardRef<PersonControls, PersonProps>((props, ref) => {
+const PersonModel = forwardRef<PersonControls, PersonProps>(({ defaultVisibile = false ,...props}, ref) => {
   const group = useRef<THREE.Group>(null);
   const gltf = useGLTF(GLTF_PATH);
   const { actions, mixer } = useAnimations(gltf.animations, group);
@@ -35,14 +36,6 @@ const PersonModel = forwardRef<PersonControls, PersonProps>((props, ref) => {
     const sequence: SequenceStep[] = generateFallScenario(mascotRef);
     runAnimationSequence(sequence, "initFallScenario");
   }, [runAnimationSequence]);
-
-  // Initialize actions with better error handling
-  useEffect(() => {
-    // firstInit();
-    mascotRef.current?.hide();
-    setTimeout(() => initPerson(), 2000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Utility methods
   const setTimeScale = useCallback(
@@ -90,7 +83,7 @@ const PersonModel = forwardRef<PersonControls, PersonProps>((props, ref) => {
 
   return (
     <group ref={group} {...props}>
-      <MascotGroup ref={mascotRef} gltf={gltf} />
+      <MascotGroup ref={mascotRef} gltf={gltf} defaultVisibile={defaultVisibile} />
     </group>
   );
 });

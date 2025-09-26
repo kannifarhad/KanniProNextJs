@@ -3,9 +3,7 @@
 import * as THREE from "three";
 import React, { useEffect, useImperativeHandle, forwardRef, useRef, memo, useCallback, useMemo } from "react";
 import { useAnimations, useGLTF } from "@react-three/drei";
-import { MascotGroup, MascotGroupRef } from "./MascotGroup";
-import PortalMesh, { MeshPortalRef } from "./PortalMesh";
-
+import { PortalWithMascot as MascotGroup, PortalRef as MascotGroupRef } from "./MascotGroup";
 export type PersonProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
@@ -27,9 +25,25 @@ const ANIMATIONS = {
 type AnimationKeyType = (typeof ANIMATIONS)[keyof typeof ANIMATIONS];
 
 type AnimationStep = {
+  type: "animation";
   animation: AnimationKeyType;
   duration?: number;
+  runBefore?: () => void | Promise<void>;
 };
+
+type FunctionStep = {
+  type: "function";
+  fn: () => void | Promise<void>;
+  name?: string;
+};
+
+type DelayStep = {
+  type: "delay";
+  duration: number;
+  name?: string;
+};
+
+type SequenceStep = AnimationStep | FunctionStep | DelayStep;
 
 export type PersonControls = {
   runWave: () => void;
@@ -41,9 +55,11 @@ export type PersonControls = {
   climbToTop: () => void;
   standUp: () => void;
   falling: () => void;
+  hide: () => void;
+  show: () => void;
   initPerson: () => void;
   initFallScenario: () => void;
-  runAnimationSequence: (sequence: AnimationStep[], sequenceName?: string) => void;
+  runAnimationSequence: (sequence: SequenceStep[], sequenceName?: string) => void;
   fadeToAction: (name: AnimationKeyType, duration?: number) => void;
   setTimeScale: (scale: number) => void;
   getCurrentAction: () => string | null;
@@ -82,7 +98,6 @@ const PersonModel = forwardRef<PersonControls, PersonProps>((props, ref) => {
 
   // Animation state management
   const activeActionRef = useRef<THREE.AnimationAction | null>(null);
-  const portalRef = useRef<MeshPortalRef>(null);
   const macotRef = useRef<MascotGroupRef>(null);
   const previousActionRef = useRef<THREE.AnimationAction | null>(null);
   const currentStateRef = useRef<AnimationKeyType>(DEFAULT_IDLE);
@@ -226,12 +241,7 @@ const PersonModel = forwardRef<PersonControls, PersonProps>((props, ref) => {
 
   // Reusable animation sequence runner
   const runAnimationSequence = useCallback(
-    (sequence: AnimationStep[], sequenceName: string = "Animation Sequence") => {
-      if (!actions || !mixer) {
-        logError(`Cannot run ${sequenceName}: actions or mixer not available`);
-        return;
-      }
-
+    (sequence: SequenceStep[], sequenceName: string = "Animation Sequence") => {
       if (!sequence || sequence.length === 0) {
         logError(`Cannot run ${sequenceName}: sequence is empty`);
         return;
@@ -247,33 +257,94 @@ const PersonModel = forwardRef<PersonControls, PersonProps>((props, ref) => {
         }
 
         const step = sequence[stepIndex];
-        const { animation, duration } = step;
-        const stepDuration = duration ?? ANIMATION_CONFIG[animation]?.duration ?? 0.2;
+        const stepNumber = stepIndex + 1;
+        const totalSteps = sequence.length;
 
-        logInfo(`${sequenceName} - Step ${stepIndex + 1}/${sequence.length}: ${animation}`, { duration: stepDuration });
+        try {
+          if (step.type === "animation") {
+            // Handle animation steps
+            if (!actions || !mixer) {
+              logError(`Cannot execute animation step in ${sequenceName}: actions or mixer not available`);
+              return;
+            }
 
-        const success = fadeToAction(animation, stepDuration);
-        if (!success) {
-          logError(`${sequenceName} failed at step ${stepIndex + 1}: ${animation}`);
+            const { animation, duration } = step;
+            const stepDuration = duration ?? ANIMATION_CONFIG[animation]?.duration ?? 0.2;
+
+            logInfo(`${sequenceName} - Step ${stepNumber}/${totalSteps}: Animation ${animation}`, {
+              duration: stepDuration,
+            });
+
+            const success = fadeToAction(animation, stepDuration);
+            if (!success) {
+              logError(`${sequenceName} failed at step ${stepNumber}: ${animation}`);
+              restoreToIdle();
+              return;
+            }
+
+            const stepListener = (e: { action?: THREE.AnimationAction }) => {
+              if (!e?.action || e.action.getClip().name !== animation) return;
+
+              // Clean up current listener
+              mixer.removeEventListener("finished", stepListener);
+              finishedListenersRef.current.delete(stepListener);
+
+              logInfo(`${sequenceName} - Step ${stepNumber} completed: ${animation}`);
+
+              // Execute next step
+              executeStep(stepIndex + 1);
+            };
+            if (step.runBefore) {
+              step.runBefore();
+            }
+            mixer.addEventListener("finished", stepListener);
+            finishedListenersRef.current.add(stepListener);
+          } else if (step.type === "function") {
+            // Handle function steps (sync or async)
+            const stepName = step.name || "Function";
+            logInfo(`${sequenceName} - Step ${stepNumber}/${totalSteps}: ${stepName}`);
+
+            try {
+              const result = step.fn();
+
+              if (result instanceof Promise) {
+                // Async function - wait for it to complete
+                result
+                  .then(() => {
+                    logInfo(`${sequenceName} - Step ${stepNumber} completed: ${stepName} (async)`);
+                    executeStep(stepIndex + 1);
+                  })
+                  .catch((error) => {
+                    logError(`${sequenceName} - Step ${stepNumber} failed: ${stepName} (async)`, error);
+                    restoreToIdle();
+                  });
+              } else {
+                // Sync function - continue immediately
+                logInfo(`${sequenceName} - Step ${stepNumber} completed: ${stepName} (sync)`);
+                executeStep(stepIndex + 1);
+              }
+            } catch (error) {
+              logError(`${sequenceName} - Step ${stepNumber} failed: ${stepName}`, error);
+              restoreToIdle();
+              return;
+            }
+          } else if (step.type === "delay") {
+            // Handle delay steps
+            const stepName = step.name || `Delay ${step.duration}ms`;
+            logInfo(`${sequenceName} - Step ${stepNumber}/${totalSteps}: ${stepName}`);
+
+            setTimeout(() => {
+              logInfo(`${sequenceName} - Step ${stepNumber} completed: ${stepName}`);
+              executeStep(stepIndex + 1);
+            }, step.duration);
+          } else {
+            logError(`${sequenceName} - Step ${stepNumber}: Unknown step type`, step);
+            executeStep(stepIndex + 1); // Skip unknown steps
+          }
+        } catch (error) {
+          logError(`${sequenceName} - Step ${stepNumber} failed`, error);
           restoreToIdle();
-          return;
         }
-
-        const stepListener = (e: { action?: THREE.AnimationAction }) => {
-          if (!e?.action || e.action.getClip().name !== animation) return;
-
-          // Clean up current listener
-          mixer.removeEventListener("finished", stepListener);
-          finishedListenersRef.current.delete(stepListener);
-
-          logInfo(`${sequenceName} - Step ${stepIndex + 1} completed: ${animation}`);
-
-          // Execute next step
-          executeStep(stepIndex + 1);
-        };
-
-        mixer.addEventListener("finished", stepListener);
-        finishedListenersRef.current.add(stepListener);
       };
 
       // Start the sequence
@@ -282,44 +353,97 @@ const PersonModel = forwardRef<PersonControls, PersonProps>((props, ref) => {
     [actions, mixer, fadeToAction, restoreToIdle, logError, logInfo]
   );
 
-  // Simplified sequence definitions using the reusable function
+  // Simplified sequence definitions using the enhanced reusable function
   const initPerson = useCallback(() => {
-    macotRef.current?.hide();
-    portalRef.current?.open();
-    setTimeout(() => {
-      portalRef.current?.close();
-    }, 3200);
-
-    const sequence: AnimationStep[] = [
-      { animation: ANIMATIONS.ClimbToTop, duration: 0.2 },
-      { animation: ANIMATIONS.Wave, duration: 0.2 },
-      { animation: ANIMATIONS.ShowBackground, duration: 0.2 },
+    const sequence: SequenceStep[] = [
+      {
+        type: "function",
+        fn: () => {
+          macotRef.current?.hide();
+          macotRef.current?.open({ hide: "above" });
+        },
+        name: "Hide mascot and open portal",
+      },
+      {
+        type: "delay",
+        duration: 500,
+        name: "Initial delay",
+      },
+      {
+        type: "animation",
+        animation: ANIMATIONS.ClimbToTop,
+        runBefore: () => macotRef.current?.show(),
+        duration: 0,
+      },
+      {
+        type: "function",
+        fn: () => {
+          macotRef.current?.show();
+        },
+        name: "Show mascot",
+      },
+      {
+        type: "function",
+        fn: () => {
+          macotRef.current?.close();
+        },
+        name: "Close portal",
+      },
+      {
+        type: "animation",
+        animation: ANIMATIONS.Wave,
+        duration: 0.2,
+      },
+      {
+        type: "animation",
+        animation: ANIMATIONS.ShowBackground,
+        duration: 0.2,
+      },
     ];
-    setTimeout(() => {
-      runAnimationSequence(sequence, "initPerson");
-      setTimeout(() => {
-        macotRef.current?.show();
-      }, 500);
-    }, 500);
+    runAnimationSequence(sequence, "initPerson");
   }, [runAnimationSequence]);
 
   const initFallScenario = useCallback(() => {
-    macotRef.current?.hide();
-
-    const sequence: AnimationStep[] = [
-      { animation: ANIMATIONS.FallImpact, duration: 0 },
-      { animation: ANIMATIONS.StandUp, duration: 0.2 },
+    const sequence: SequenceStep[] = [
+      {
+        type: "function",
+        fn: () => {
+          macotRef.current?.hide();
+          macotRef.current?.open({ position: [0, 5.1, 0], size: 10, rotation: [Math.PI / 2.3, 0, 0], hide: "above" });
+        },
+        name: "Hide mascot and open portal with config",
+      },
+      {
+        type: "delay",
+        duration: 500,
+        name: "Initial delay",
+      },
+      {
+        type: "function",
+        fn: () => {
+          macotRef.current?.show();
+        },
+        name: "Show mascot",
+      },
+      {
+        type: "animation",
+        animation: ANIMATIONS.FallImpact,
+        duration: 0,
+      },
+      {
+        type: "function",
+        fn: () => {
+          macotRef.current?.close();
+        },
+        name: "Close portal",
+      },
+      {
+        type: "animation",
+        animation: ANIMATIONS.StandUp,
+        duration: 0.2,
+      },
     ];
-    console.log("MeshPortal timer");
-
-    portalRef.current?.open({ position: [0, 6.1, 0], size: 10, rotation: [Math.PI / 2.3, 0, 0] });
-    setTimeout(() => {
-      runAnimationSequence(sequence, "initFallScenario");
-      macotRef.current?.show();
-    }, 500);
-    setTimeout(() => {
-      portalRef.current?.close();
-    }, 2000);
+    runAnimationSequence(sequence, "initFallScenario");
   }, [runAnimationSequence]);
 
   // Initialize actions with better error handling
@@ -446,6 +570,8 @@ const PersonModel = forwardRef<PersonControls, PersonProps>((props, ref) => {
       climbToTop: () => playEmote(ANIMATIONS.ClimbToTop),
       standUp: () => playEmote(ANIMATIONS.StandUp),
       falling: () => playEmote(ANIMATIONS.Falling),
+      hide: () => macotRef.current?.hide(),
+      show: () => macotRef.current?.show(),
 
       // Animation sequences
       initPerson,
@@ -480,7 +606,6 @@ const PersonModel = forwardRef<PersonControls, PersonProps>((props, ref) => {
 
   return (
     <group ref={group} {...props}>
-      <PortalMesh ref={portalRef} />
       <MascotGroup ref={macotRef} gltf={gltf} />
     </group>
   );

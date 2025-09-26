@@ -91,7 +91,7 @@ const Person = () => {
         ligtpreset="city"
         className={classNames({ hero3d: true, pointerCursor: hover })}
       >
-        <directionalLight castShadow position={[5, 10, 5]} intensity={1.2} />
+        {/* <directionalLight castShadow position={[5, 10, 5]} intensity={1.2} /> */}
 
         <group position={[0, 0, 0]} scale={0.8}>
           <PersonModel
@@ -100,13 +100,11 @@ const Person = () => {
             onPointerOver={handleHoverOn}
             onPointerOut={handleHoverOut}
             onPointerUp={handleHoverOut}
-            // material-clippingPlanes={[new THREE.Plane(new THREE.Vector3(0, 1, 0), 0)]} // 👈 hide below y=0
-            // material-clipShadows={true} // keep shadows correct
           />
         </group>
 
         <OrbitControls enablePan={false} enableZoom minPolarAngle={Math.PI / 2.5} maxPolarAngle={Math.PI / 2.5} />
-        <ContactShadows position={[0, 0, 0]} scale={10} blur={2} opacity={0.6} far={4} />
+        <ContactShadows position={[0, 0, 0]} scale={10} blur={2} opacity={0.6} far={4} layers={0} />
       </RenderModel>
     </div>
   );

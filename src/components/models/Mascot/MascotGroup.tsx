@@ -1,268 +1,191 @@
-// Explicitly enable any here because i dont want to install additional library for gltf types.
-// We dont have strong typing in ThreeJs yet.
-// Explicitly enable any here because i dont want to install additional library for gltf types.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, memo } from "react";
 import * as THREE from "three";
-import { memo, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
+import { useFrame, useThree, extend } from "@react-three/fiber";
+import { PortalMaterial } from "./PortalMaterial";
 
-export interface MascotGroupRef {
+extend({ PortalMaterial });
+
+export interface PortalRef {
+  open: (cfg?: PortalConfig) => void;
+  close: () => void;
   hide: () => void;
   show: () => void;
   toggle: () => void;
 }
 
-export const MascotGroup = forwardRef<MascotGroupRef, { gltf: any }>(({ gltf }, ref) => {
-  const groupRef = useRef<THREE.Group>(null);
-  const { nodes, materials } = gltf;
+export interface PortalConfig {
+  position?: [number, number, number];
+  rotation?: [number, number, number]; // Euler XYZ radians
+  size?: number; // world units
+  color?: string; // hex, e.g. "#00ff00"
+  hide?: "above" | "below";
+}
+
+const DEFAULT: Required<PortalConfig> = {
+  position: [0, 0, -3.5],
+  rotation: [-Math.PI / 2, 0, 0],
+  size: 7,
+  color: "#00ff04",
+  hide: "below",
+};
+const DURATION = 0.45;
+
+export const PortalWithMascot = forwardRef<PortalRef, { gltf: any }>(({ gltf }, ref) => {
+  const { nodes } = gltf;
+  const { gl, camera } = useThree();
+  const portalMeshRef = useRef<THREE.Mesh | null>(null);
+  const portalMatRef = useRef<any>(null);
+  const mascotGroupRef = useRef<THREE.Group | null>(null);
+
+  const planeRef = useRef<THREE.Plane | null>(null);
+  const modifiedMaterials = useRef<Set<THREE.Material>>(new Set());
+  const cfgRef = useRef<Required<PortalConfig>>(DEFAULT);
+  const animState = useRef<"opening" | "closing" | null>(null);
+  const animTime = useRef(0);
+  camera.layers.enable(1);
+
+  useEffect(() => {
+    gl.localClippingEnabled = true;
+    return () => {
+      gl.clippingPlanes = [];
+      gl.localClippingEnabled = false;
+    };
+  }, [gl]);
+
+  function applyPlaneToMascotMaterials(plane: THREE.Plane) {
+    modifiedMaterials.current.clear();
+    if (!mascotGroupRef.current) return;
+
+    mascotGroupRef.current.traverse((child: any) => {
+      if (child.isMesh || child.isSkinnedMesh) {
+        const mesh = child as THREE.Mesh;
+        const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+        mats.forEach((mat: THREE.Material | null) => {
+          if (!mat) return;
+          modifiedMaterials.current.add(mat);
+          (mat as any).clippingPlanes = [plane];
+          (mat as any).clipShadows = false;
+          mat.needsUpdate = true;
+        });
+      }
+    });
+  }
+
+  function removeClippingFromMaterials() {
+    modifiedMaterials.current.forEach((mat) => {
+      if (!mat) return;
+      try {
+        (mat as any).clippingPlanes = [];
+        (mat as any).clipShadows = false;
+        mat.needsUpdate = true;
+      } catch {}
+    });
+    modifiedMaterials.current.clear();
+    planeRef.current = null;
+  }
 
   useImperativeHandle(ref, () => ({
     hide: () => {
-      if (groupRef.current) groupRef.current.visible = false;
+      if (mascotGroupRef.current) mascotGroupRef.current.visible = false;
     },
     show: () => {
-      if (groupRef.current) groupRef.current.visible = true;
+      if (mascotGroupRef.current) mascotGroupRef.current.visible = true;
     },
     toggle: () => {
-      if (groupRef.current) groupRef.current.visible = !groupRef.current.visible;
+      if (mascotGroupRef.current) mascotGroupRef.current.visible = !mascotGroupRef.current.visible;
+    },
+    open: (cfg?: PortalConfig) => {
+      const merged: Required<PortalConfig> = { ...DEFAULT, ...(cfg ?? {}) };
+      cfgRef.current = merged;
+
+      if (portalMeshRef.current) {
+        portalMeshRef.current.position.set(...merged.position);
+        portalMeshRef.current.rotation.set(...merged.rotation);
+        portalMeshRef.current.scale.set(merged.size, merged.size, 1);
+        portalMeshRef.current.visible = true;
+        portalMeshRef.current!.layers.set(1);
+      }
+
+      const normalWorld = new THREE.Vector3(0, 0, 1).applyEuler(new THREE.Euler(...merged.rotation)).normalize();
+      if (merged.hide === "below") normalWorld.negate();
+
+      const plane = new THREE.Plane().setFromNormalAndCoplanarPoint(normalWorld, new THREE.Vector3(...merged.position));
+      planeRef.current = plane;
+      applyPlaneToMascotMaterials(plane);
+
+      if (portalMatRef.current) {
+        const c = new THREE.Color(merged.color);
+        portalMatRef.current.uColor = [c.r, c.g, c.b];
+      }
+
+      animState.current = "opening";
+      animTime.current = 0;
+    },
+    close: () => {
+      animState.current = "closing";
+      animTime.current = 0;
     },
   }));
 
-  useEffect(() => {
-    if (!groupRef.current) return;
+  useFrame((_, delta) => {
+    if (portalMatRef.current) portalMatRef.current.time = (portalMatRef.current.time || 0) + delta;
 
-    const clipPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+    if (portalMatRef.current && animState.current) {
+      animTime.current += delta;
+      const tRaw = Math.min(animTime.current / DURATION, 1);
+      const ease = tRaw < 0.5 ? 2 * tRaw * tRaw : -1 + (4 - 2 * tRaw) * tRaw;
 
-    groupRef.current.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh || (child as THREE.SkinnedMesh).isSkinnedMesh) {
-        const mesh = child as THREE.Mesh | THREE.SkinnedMesh;
-        if (Array.isArray(mesh.material)) {
-          mesh.material.forEach((mat) => {
-            mat.clippingPlanes = [clipPlane];
-            mat.clipShadows = true;
-            mat.needsUpdate = true;
-          });
-        } else {
-          mesh.material.clippingPlanes = [clipPlane];
-          mesh.material.clipShadows = true;
-          mesh.material.needsUpdate = true;
+      if (animState.current === "opening") {
+        const bounce = tRaw > 0.75 ? Math.sin((tRaw - 0.75) * Math.PI * 6) * 0.04 * (1 - tRaw) : 0;
+        portalMatRef.current.uRadius = ease * 0.95 + bounce;
+        if (tRaw >= 1) animState.current = null;
+      } else {
+        portalMatRef.current.uRadius = (1 - ease) * 0.95;
+        if (tRaw >= 1) {
+          animState.current = null;
+          if (portalMeshRef.current) portalMeshRef.current.visible = false;
+          removeClippingFromMaterials();
         }
       }
-    });
-  }, []);
+    }
+
+    if (planeRef.current && portalMeshRef.current) {
+      const worldPos = new THREE.Vector3();
+      portalMeshRef.current.getWorldPosition(worldPos);
+      const worldQuat = new THREE.Quaternion();
+      portalMeshRef.current.getWorldQuaternion(worldQuat);
+      const normalWorld = new THREE.Vector3(0, 0, 1).applyQuaternion(worldQuat).normalize();
+      if (cfgRef.current.hide === "below") normalWorld.negate();
+      planeRef.current.setFromNormalAndCoplanarPoint(normalWorld, worldPos);
+    }
+  });
 
   return (
-    <group ref={groupRef} name="Scene">
-      <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.001}>
-        <group name="backpack">
-          <skinnedMesh
-            name="model_47002"
-            geometry={nodes.model_47002.geometry}
-            material={materials["Material.001"]}
-            skeleton={nodes.model_47002.skeleton}
-          />
-          <skinnedMesh
-            name="model_47002_1"
-            geometry={nodes.model_47002_1.geometry}
-            material={materials["Material.002"]}
-            skeleton={nodes.model_47002_1.skeleton}
-          />
-          <skinnedMesh
-            name="model_47002_2"
-            geometry={nodes.model_47002_2.geometry}
-            material={materials["Material.003"]}
-            skeleton={nodes.model_47002_2.skeleton}
-          />
-          <skinnedMesh
-            name="model_47002_3"
-            geometry={nodes.model_47002_3.geometry}
-            material={materials.backpabbot}
-            skeleton={nodes.model_47002_3.skeleton}
-          />
+    <group>
+      {/* Portal plane visual */}
+      <mesh ref={portalMeshRef} castShadow={false} receiveShadow={false} visible={false}>
+        <planeGeometry args={[1, 1, 128, 128]} />
+        {/* @ts-expect-error extended shader material */}
+        <portalMaterial ref={portalMatRef} uRadius={0} uColor={[0, 1, 0]} depthWrite={true} />
+      </mesh>
+
+      {/* Mascot group */}
+      <group ref={mascotGroupRef} name="Scene">
+        <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.001}>
+          {Object.values(nodes)
+            .filter((n: any) => n.isMesh || n.isSkinnedMesh)
+            .map((node: any, i) => (
+              <skinnedMesh key={i} geometry={node.geometry} material={node.material} skeleton={node.skeleton} />
+            ))}
+          <primitive object={nodes.mixamorigHips} />
         </group>
-        <skinnedMesh
-          name="chest"
-          geometry={nodes.chest.geometry}
-          material={materials["chest.001"]}
-          skeleton={nodes.chest.skeleton}
-        />
-        <skinnedMesh
-          name="chestplate"
-          geometry={nodes.chestplate.geometry}
-          material={materials.chest}
-          skeleton={nodes.chestplate.skeleton}
-        />
-        <skinnedMesh
-          name="head"
-          geometry={nodes.head.geometry}
-          material={materials.skin}
-          skeleton={nodes.head.skeleton}
-        />
-        <skinnedMesh
-          name="head001"
-          geometry={nodes.head001.geometry}
-          material={materials.armband}
-          skeleton={nodes.head001.skeleton}
-        />
-        <skinnedMesh
-          name="heart"
-          geometry={nodes.heart.geometry}
-          material={materials.button}
-          skeleton={nodes.heart.skeleton}
-        />
-        <skinnedMesh
-          name="heart2"
-          geometry={nodes.heart2.geometry}
-          material={materials.shiny}
-          skeleton={nodes.heart2.skeleton}
-        />
-        <skinnedMesh
-          name="leftleg"
-          geometry={nodes.leftleg.geometry}
-          material={materials["Material.003"]}
-          skeleton={nodes.leftleg.skeleton}
-        />
-        <group name="model_47">
-          <skinnedMesh
-            name="model_47_1"
-            geometry={nodes.model_47_1.geometry}
-            material={materials["Material.003"]}
-            skeleton={nodes.model_47_1.skeleton}
-          />
-          <skinnedMesh
-            name="model_47_2"
-            geometry={nodes.model_47_2.geometry}
-            material={materials.backpack2}
-            skeleton={nodes.model_47_2.skeleton}
-          />
-          <skinnedMesh
-            name="model_47_3"
-            geometry={nodes.model_47_3.geometry}
-            material={materials.glove}
-            skeleton={nodes.model_47_3.skeleton}
-          />
-          <skinnedMesh
-            name="model_47_4"
-            geometry={nodes.model_47_4.geometry}
-            material={materials.shoew}
-            skeleton={nodes.model_47_4.skeleton}
-          />
-          <skinnedMesh
-            name="model_47_5"
-            geometry={nodes.model_47_5.geometry}
-            material={materials.shoe1}
-            skeleton={nodes.model_47_5.skeleton}
-          />
-        </group>
-        <group name="model_47001">
-          <skinnedMesh
-            name="model_47014"
-            geometry={nodes.model_47014.geometry}
-            material={materials["Material.003"]}
-            skeleton={nodes.model_47014.skeleton}
-          />
-          <skinnedMesh
-            name="model_47014_1"
-            geometry={nodes.model_47014_1.geometry}
-            material={materials.backpack2}
-            skeleton={nodes.model_47014_1.skeleton}
-          />
-          <skinnedMesh
-            name="model_47014_2"
-            geometry={nodes.model_47014_2.geometry}
-            material={materials.glove}
-            skeleton={nodes.model_47014_2.skeleton}
-          />
-        </group>
-        <skinnedMesh
-          name="model_58001"
-          geometry={nodes.model_58001.geometry}
-          material={materials.shiny}
-          skeleton={nodes.model_58001.skeleton}
-        />
-        <skinnedMesh
-          name="model_59001"
-          geometry={nodes.model_59001.geometry}
-          material={materials.face}
-          skeleton={nodes.model_59001.skeleton}
-        />
-        <skinnedMesh
-          name="model_61001"
-          geometry={nodes.model_61001.geometry}
-          material={materials.face}
-          skeleton={nodes.model_61001.skeleton}
-        />
-        <skinnedMesh
-          name="model_63001"
-          geometry={nodes.model_63001.geometry}
-          material={materials.shoew}
-          skeleton={nodes.model_63001.skeleton}
-        />
-        <skinnedMesh
-          name="model_64001"
-          geometry={nodes.model_64001.geometry}
-          material={materials.shoe1}
-          skeleton={nodes.model_64001.skeleton}
-        />
-        <skinnedMesh
-          name="rightarm001"
-          geometry={nodes.rightarm001.geometry}
-          material={materials.skin}
-          skeleton={nodes.rightarm001.skeleton}
-        />
-        <skinnedMesh
-          name="rightarm002"
-          geometry={nodes.rightarm002.geometry}
-          material={materials.skin}
-          skeleton={nodes.rightarm002.skeleton}
-        />
-        <skinnedMesh
-          name="rightarmband"
-          geometry={nodes.rightarmband.geometry}
-          material={materials.armband}
-          skeleton={nodes.rightarmband.skeleton}
-        />
-        <skinnedMesh
-          name="rightarmband001"
-          geometry={nodes.rightarmband001.geometry}
-          material={materials.armband}
-          skeleton={nodes.rightarmband001.skeleton}
-        />
-        <skinnedMesh
-          name="righthand"
-          geometry={nodes.righthand.geometry}
-          material={materials.glove}
-          skeleton={nodes.righthand.skeleton}
-        />
-        <skinnedMesh
-          name="righthand001"
-          geometry={nodes.righthand001.geometry}
-          material={materials.glove}
-          skeleton={nodes.righthand001.skeleton}
-        />
-        <skinnedMesh
-          name="rightleg"
-          geometry={nodes.rightleg.geometry}
-          material={materials["Material.003"]}
-          skeleton={nodes.rightleg.skeleton}
-        />
-        <skinnedMesh
-          name="straps"
-          geometry={nodes.straps.geometry}
-          material={materials["Material.004"]}
-          skeleton={nodes.straps.skeleton}
-        />
-        <skinnedMesh
-          name="torse"
-          geometry={nodes.torse.geometry}
-          material={materials["Material.003"]}
-          skeleton={nodes.torse.skeleton}
-        />
-        <primitive object={nodes.mixamorigHips} />
       </group>
     </group>
   );
 });
-MascotGroup.displayName = "MascotGroup";
-export default memo(MascotGroup);
+
+PortalWithMascot.displayName = "PortalWithMascot";
+export default memo(PortalWithMascot);

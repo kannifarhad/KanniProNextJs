@@ -30,5 +30,5 @@ export const ANIMATION_CONFIG = {
 } as const;
 
 export const DEFAULT_IDLE = ANIMATIONS.IdleHappy;
-export const GLTF_PATH = "./models/mascot1.glb";
+export const GLTF_PATH = "./models/mascot.glb";
 export const DEFAULT_FADE_DURATION = 0.5;

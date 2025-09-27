@@ -8,14 +8,16 @@ import Person from "../sections/Person";
 
 export default function Home() {
   return (
-    <div className="max-[900px]:overflow-x-hidden">
-      <Hero />
-      <HomeAbout />
-      <HomeWorkHistory />
-      <ContactMe />
+    <>
+      <div className="max-[900px]:overflow-hidden">
+        <Hero />
+        <HomeAbout />
+        <HomeWorkHistory />
+        <ContactMe />
+        <SectionsObserver />
+        <Person />
+      </div>
       <LastFromBlogCarousel />
-      <SectionsObserver />
-      <Person />
-    </div>
+    </>
   );
 }

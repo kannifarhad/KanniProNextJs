@@ -33,7 +33,7 @@ export const StyledBlogItem = styled.article`
       display: flex;
       align-items: center;
       gap: 8px; /* Optional spacing between spans */
-      a {
+      span {
         position: relative;
         padding-right: 10px; /* Add space for the circle */
         font-size: 14px;
@@ -51,9 +51,6 @@ export const StyledBlogItem = styled.article`
           background-color: black;
           border-radius: 50%;
         }
-        &:hover {
-          color: var(--card-bg3)
-        }
       }
     }
     & .readmore {
@@ -67,6 +64,9 @@ export const StyledBlogItem = styled.article`
   animation: bounce-on-leave 0.3s ease-in-out forwards;
   &:hover {
     animation: bounce-on-hover 0.3s ease-in-out forwards;
+    & .readmore {
+      color: var(--card-bg3);
+    }
   }
 
   @keyframes bounce-on-hover {

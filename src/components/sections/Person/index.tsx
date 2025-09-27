@@ -13,8 +13,8 @@ import { usePersonStore } from "../SectionsObserver/personStore";
 const PersonModel = dynamic(() => import("@/components/models/Mascot"), {
   ssr: false,
 });
-
 const enableOrbit = false;
+
 const CanvasWidth = 300;
 const CanvasHeight = 300;
 
@@ -128,8 +128,11 @@ const Person = () => {
       >
         <RenderModel
           canvasProps={{
-            camera: { position: [0, 15, 5], fov: 30 },
+            camera: { position: [0, 5, 15], fov: 30 },
             gl: { localClippingEnabled: true },
+            onCreated: (state) => {
+              state.camera.lookAt(0, 0, 0); // 👈 Force camera to look at origin
+            },
           }}
           ligtpreset="city"
           className={classNames({ hero3d: true, pointerCursor: hover })}
@@ -140,7 +143,7 @@ const Person = () => {
             <PersonModel ref={mascotRef} castShadow onPointerOver={handleHoverOn} onPointerOut={handleHoverOut} onPointerUp={handleHoverOut} />
           </group>
 
-          <OrbitControls enablePan={false} enableZoom={enableOrbit} enableRotate={enableOrbit} minPolarAngle={Math.PI / 2.5} maxPolarAngle={Math.PI / 2.5} />
+          <OrbitControls enabled={enableOrbit} enablePan={false} minPolarAngle={Math.PI / 2.5} maxPolarAngle={Math.PI / 2.5} />
           <ContactShadows position={[0, -2, 0]} scale={10} blur={2} opacity={0.6} far={4} layers={0} />
         </RenderModel>
       </div>

@@ -2,7 +2,7 @@
 import styled from "styled-components";
 
 export const StyledContactMe = styled.div`
-  padding: 200px 20px 200px 20px;
+  padding: 150px 20px 150px 20px;
   position: relative;
   overflow: hidden;
   & .head {

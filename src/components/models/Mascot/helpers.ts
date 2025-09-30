@@ -82,7 +82,7 @@ export const generateFallScenario = (mascotRef: RefObject<MascotGroupRef>): Sequ
       type: "function",
       fn: () => {
         mascotRef.current?.hide();
-        mascotRef.current?.open({ position: [0, 6.5, 0], size: 10, rotation: [Math.PI / 2.4, 0, 0], hide: "above" });
+        mascotRef.current?.open({ position: [1.6, 6.5, 0], size: 9, rotation: [Math.PI / 2.4, 0, 0], hide: "above" });
       },
       name: "Hide mascot and open portal with config",
     },
@@ -113,7 +113,12 @@ export const generateFallScenario = (mascotRef: RefObject<MascotGroupRef>): Sequ
     {
       type: "animation",
       animation: ANIMATIONS.StandUp,
-      duration: 0.2,
+      duration: 0.3,
+    },
+     {
+      type: "animation",
+      animation: ANIMATIONS.ThumbsUp,
+      duration: 0.3,
     },
   ];
 };

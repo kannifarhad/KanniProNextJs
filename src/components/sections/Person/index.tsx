@@ -1,7 +1,10 @@
 "use client";
 import dynamic from "next/dynamic";
 import RenderModel from "@/components/ui/ThreeJS/RenderModel";
-import { ContactShadows, OrbitControls } from "@react-three/drei";
+import {
+  ContactShadows,
+  // OrbitControls
+} from "@react-three/drei";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAppDispatch } from "@/store";
 import { addHint } from "@/store/reducers/common";
@@ -13,9 +16,8 @@ import { usePersonStore } from "../SectionsObserver/personStore";
 const PersonModel = dynamic(() => import("@/components/models/Mascot"), {
   ssr: false,
 });
-const enableOrbit = false;
 
-const CanvasWidth = 300;
+const CanvasWidth = 400;
 const CanvasHeight = 300;
 
 const Person = () => {
@@ -103,6 +105,10 @@ const Person = () => {
         <button type="submit" className="btn p-2" onClick={() => mascotRef.current?.fallImpact()}>
           Fall
         </button>
+        <button type="submit" className="btn p-2" onClick={() => mascotRef.current?.test()}>
+          TEST
+        </button>
+
         <button type="submit" className="btn p-2" onClick={() => mascotRef.current?.thumbsUp()}>
           Thumbs
         </button>
@@ -140,10 +146,16 @@ const Person = () => {
           <directionalLight castShadow position={[5, 10, 5]} intensity={1.2} />
 
           <group position={[0, -2, 0]} scale={0.8}>
-            <PersonModel ref={mascotRef} castShadow onPointerOver={handleHoverOn} onPointerOut={handleHoverOut} onPointerUp={handleHoverOut} />
+            <PersonModel
+              ref={mascotRef}
+              castShadow
+              onPointerOver={handleHoverOn}
+              onPointerOut={handleHoverOut}
+              onPointerUp={handleHoverOut}
+            />
           </group>
 
-          <OrbitControls enabled={enableOrbit} enablePan={false} minPolarAngle={Math.PI / 2.5} maxPolarAngle={Math.PI / 2.5} />
+          {/* <OrbitControls enabled={enableOrbit} enablePan={false} minPolarAngle={Math.PI / 2.5} maxPolarAngle={Math.PI / 2.5} /> */}
           <ContactShadows position={[0, -2, 0]} scale={10} blur={2} opacity={0.6} far={4} layers={0} />
         </RenderModel>
       </div>

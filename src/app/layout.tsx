@@ -1,5 +1,4 @@
 import StoreProvider from "@/store/StoreProvider";
-import { FC, PropsWithChildren } from "react";
 import Footer from "@/components/sections/Footer/Footer";
 import { Quicksand, Bebas_Neue } from "next/font/google";
 import "normalize.css";
@@ -8,15 +7,19 @@ import Header from "@/components/sections/Header";
 import StyledComponentsRegistry from "@/app/registry";
 import MouseMessages from "@/components/sections/MouseMessages";
 
-const QuicksandFont = Quicksand({ subsets: ["latin"] });
-const BebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
+const quicksand = Quicksand({ subsets: ["latin"] });
+const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
 
-const getFontClassNames = () => {
-  return `${BebasNeue.className} ${QuicksandFont.className}`;
+export const metadata = {
+  title: "Farhad Aliyev | Full Stack Developer & Software Architect",
+  name: "Farhad Aliyev",
+  info: `Full Stack Developer & Software Architect`,
+  description: "Full Stack Developer specializing in JavaScript, TypeScript, React.Js, Node.js, SaaS platforms, and microservices. Crafting scalable, user-focused digital solutions",
+  image: "https://kanni.pro/images/portrait.png",
 };
 
-export const RootLayout: FC<PropsWithChildren> = ({ children }) => {
-  const fontClassNames = getFontClassNames();
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const fontClassNames = `${bebasNeue.className} ${quicksand.className}`;
 
   return (
     <html lang="en">
@@ -35,6 +38,4 @@ export const RootLayout: FC<PropsWithChildren> = ({ children }) => {
       </body>
     </html>
   );
-};
-
-export default RootLayout;
+}

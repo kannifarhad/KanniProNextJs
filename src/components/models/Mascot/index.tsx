@@ -12,7 +12,7 @@ export * from "./types";
 // Preload the model
 useGLTF.preload(GLTF_PATH);
 
-const PersonModel = forwardRef<PersonControls, PersonProps>(({ defaultVisibile = false ,...props}, ref) => {
+const PersonModel = forwardRef<PersonControls, PersonProps>(({ defaultVisibile = false, ...props }, ref) => {
   const group = useRef<THREE.Group>(null);
   const gltf = useGLTF(GLTF_PATH);
   const { actions, mixer } = useAnimations(gltf.animations, group);
@@ -20,10 +20,19 @@ const PersonModel = forwardRef<PersonControls, PersonProps>(({ defaultVisibile =
   // Animation state management
   const mascotRef = useRef<MascotGroupRef>(null);
 
-  const { runAnimationSequence, isAnimating, stopAllAnimations, pauseAnimations, resumeAnimations, playEmote, getCurrentAction } = useAnimationRunners({
+  const {
+    runAnimationSequence,
+    isAnimating,
+    stopAllAnimations,
+    pauseAnimations,
+    resumeAnimations,
+    playEmote,
+    getCurrentAction,
+  } = useAnimationRunners({
     actions,
     mixer,
   });
+  console.log("actions", actions);
   // Clean up event listeners
 
   // Simplified sequence definitions using the enhanced reusable function
@@ -61,7 +70,7 @@ const PersonModel = forwardRef<PersonControls, PersonProps>(({ defaultVisibile =
       showBackground: () => playEmote(ANIMATIONS.ShowBackground),
       climbToTop: () => playEmote(ANIMATIONS.ClimbToTop),
       standUp: () => playEmote(ANIMATIONS.StandUp),
-      falling: () => playEmote(ANIMATIONS.Falling),
+      test: () => playEmote(ANIMATIONS.IdleBashful),
       hide: () => mascotRef.current?.hide(),
       show: () => mascotRef.current?.show(),
 
@@ -78,7 +87,18 @@ const PersonModel = forwardRef<PersonControls, PersonProps>(({ defaultVisibile =
       pauseAnimations,
       resumeAnimations,
     }),
-    [playEmote, initPerson, initFallScenario, runAnimationSequence, setTimeScale, getCurrentAction, isAnimating, stopAllAnimations, pauseAnimations, resumeAnimations]
+    [
+      playEmote,
+      initPerson,
+      initFallScenario,
+      runAnimationSequence,
+      setTimeScale,
+      getCurrentAction,
+      isAnimating,
+      stopAllAnimations,
+      pauseAnimations,
+      resumeAnimations,
+    ]
   );
 
   return (

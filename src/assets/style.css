@@ -8,7 +8,7 @@
   --white-color: #ffffff;
   --grey-color: #f1f1f1;
   /* --grey-color: #d8d8d8; */
-
+  --bubbleSpeechColor: #ffffff;
   --grey-m-color: #313131;
   --light-violet-color: #d1d4ff;
   --dark-violet-color: #3b3649;
@@ -50,7 +50,7 @@
   --background: var(--dark-grey);
   --foreground: var(--grey-color);
   --text-color: var(--dark-grey);
-
+  --bubbleSpeechColor: var(--grey-m-color);
   --workstory-card-background: var(--grey-m-color);
   --card-background: var(--grey-m-color);
 

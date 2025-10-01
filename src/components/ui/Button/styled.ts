@@ -31,7 +31,7 @@ export const StyledButton = styled.button`
   transition: all 0.3s ease;
   color: var(--button-text-color);
   background: var(--button-bg-color);
-
+  z-index: 1;
   &:hover {
     color: var(--button-text-hover-color);
     border-color: var(--button-border-hover-color);

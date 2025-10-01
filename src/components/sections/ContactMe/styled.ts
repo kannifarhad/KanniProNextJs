@@ -2,9 +2,14 @@
 import styled from "styled-components";
 
 export const StyledContactMe = styled.div`
+  --contact-me-background: radial-gradient(circle, rgba(209, 212, 255, 1) 0%, rgba(209, 212, 255, 0) 50%);
+  .dark & {
+    --contact-me-background: 'transparent';
+  }
   padding: 150px 20px 150px 20px;
   position: relative;
   overflow: hidden;
+  background: var(--contact-me-background);
   & .head {
     max-width: 800px;
     text-align: center;

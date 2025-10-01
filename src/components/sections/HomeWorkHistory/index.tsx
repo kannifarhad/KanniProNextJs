@@ -79,8 +79,23 @@ const WorkHistory = () => {
         <defs>
           <filter id="goo">
             <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 17 -7.3" result="goo" />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 17 -7.3"
+              result="goo"
+            />
             <feBlend in="SourceGraphic" in2="goo" />
+          </filter>
+          <filter id="gooSmall">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 17 -7.3"
+              result="gooSmall"
+            />
+            <feBlend in="SourceGraphic" in2="gooSmall" />
           </filter>
         </defs>
       </svg>

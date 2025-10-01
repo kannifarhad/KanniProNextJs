@@ -6,16 +6,22 @@ export type PersonProps = {
   defaultVisibile?: boolean;
 };
 
+type ControlCallBackType = () => void;
+
 export type PersonControls = {
-  runWave: () => void;
-  sitDown: () => void;
-  dance: () => void;
-  thumbsUp: () => void;
-  fallImpact: () => void;
-  showBackground: () => void;
-  climbToTop: () => void;
-  standUp: () => void;
-  test: () => void;
+  wave: (callback?: ControlCallBackType) => void;
+  scared: (callback?: ControlCallBackType) => void;
+  victory: (callback?: ControlCallBackType) => void;
+  defeated: (callback?: ControlCallBackType) => void;
+  sitDown: (callback?: ControlCallBackType) => void;
+  dance: (callback?: ControlCallBackType) => void;
+  talking: (callback?: ControlCallBackType) => void;
+  thumbsUp: (callback?: ControlCallBackType) => void;
+  fallImpact: (callback?: ControlCallBackType) => void;
+  showBackground: (callback?: ControlCallBackType) => void;
+  climbToTop: (callback?: ControlCallBackType) => void;
+  standUp: (callback?: ControlCallBackType) => void;
+  test: (callback?: ControlCallBackType) => void;
   hide: () => void;
   show: () => void;
   initPerson: () => void;

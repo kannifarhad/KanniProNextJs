@@ -15,6 +15,10 @@ export const ANIMATIONS = {
   FallImpact: "FallingImpact",
   StandUp: "StandUp",
   ThumbsUp: "ThumbsUp",
+  Defeat: "Defeat",
+  Talking: "Talking",
+  Victory: "Victory",
+  Scared: "Scared",
 } as const;
 
 export const ANIMATION_CONFIG = {
@@ -29,6 +33,10 @@ export const ANIMATION_CONFIG = {
   [ANIMATIONS.FallImpact]: { type: "emote", loop: false, duration: 0.2 },
   [ANIMATIONS.StandUp]: { type: "emote", loop: false, duration: 0.3 },
   [ANIMATIONS.ThumbsUp]: { type: "emote", loop: false, duration: 0.2 },
+  [ANIMATIONS.Defeat]: { type: "emote", loop: false, duration: 0.2 },
+  [ANIMATIONS.Talking]: { type: "emote", loop: false, duration: 0.2 },
+  [ANIMATIONS.Victory]: { type: "emote", loop: false, duration: 0.2 },
+  [ANIMATIONS.Scared]: { type: "emote", loop: false, duration: 0.2 },
 } as const;
 
 export const DEFAULT_IDLE = ANIMATIONS.IdleHappy;

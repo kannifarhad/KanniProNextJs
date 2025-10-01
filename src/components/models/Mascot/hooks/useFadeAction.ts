@@ -10,16 +10,16 @@ export const useFadeAction = (actions: { [x: string]: THREE.AnimationAction | nu
   const isAnimatingRef = useRef(false);
 
   const fadeToAction = useCallback(
-    (name: AnimationKeyType, duration: number = DEFAULT_FADE_DURATION) => {
+    (name: AnimationKeyType, duration: number = DEFAULT_FADE_DURATION, loop: boolean = false) => {
       if (!actions || !actions[name]) {
         logError(`Animation "${name}" not found in available actions`);
         return false;
       }
+      isAnimatingRef.current = true;
       try {
         const newAction = actions[name]!;
         const oldAction = activeActionRef.current;
         const config = ANIMATION_CONFIG[name];
-
         logInfo(`Fading to animation: ${name}`, { duration, config });
 
         if (oldAction && oldAction !== newAction && oldAction.enabled) {
@@ -33,8 +33,9 @@ export const useFadeAction = (actions: { [x: string]: THREE.AnimationAction | nu
 
         if (config.type === "emote") {
           newAction.clampWhenFinished = true;
-          newAction.loop = THREE.LoopOnce;
+          newAction.loop = loop ? THREE.LoopRepeat : THREE.LoopOnce;
         } else {
+          isAnimatingRef.current = false;
           newAction.loop = THREE.LoopRepeat;
         }
 
@@ -42,7 +43,6 @@ export const useFadeAction = (actions: { [x: string]: THREE.AnimationAction | nu
 
         previousActionRef.current = oldAction;
         activeActionRef.current = newAction;
-        isAnimatingRef.current = true;
         return true;
       } catch (error) {
         logError(`Failed to fade to animation "${name}"`, error);
@@ -61,7 +61,10 @@ export const useFadeAction = (actions: { [x: string]: THREE.AnimationAction | nu
   return {
     fadeToAction,
     restoreToIdle,
-    isAnimating: () => isAnimatingRef.current,
+    isAnimating: () => {
+      console.log("isAnimatingRef.current", isAnimatingRef.current);
+      return isAnimatingRef.current;
+    },
     getCurrentAction: () => activeActionRef.current?.getClip()?.name || null,
   };
 };

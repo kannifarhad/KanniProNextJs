@@ -32,7 +32,6 @@ const PersonModel = forwardRef<PersonControls, PersonProps>(({ defaultVisibile =
     actions,
     mixer,
   });
-  console.log("actions", actions);
   // Clean up event listeners
 
   // Simplified sequence definitions using the enhanced reusable function
@@ -62,15 +61,19 @@ const PersonModel = forwardRef<PersonControls, PersonProps>(({ defaultVisibile =
     ref,
     () => ({
       // Specific emote methods
-      runWave: () => playEmote(ANIMATIONS.Wave),
-      sitDown: () => playEmote(ANIMATIONS.IdleSit),
-      dance: () => playEmote(ANIMATIONS.Dance),
-      thumbsUp: () => playEmote(ANIMATIONS.ThumbsUp),
-      fallImpact: () => playEmote(ANIMATIONS.FallImpact),
-      showBackground: () => playEmote(ANIMATIONS.ShowBackground),
-      climbToTop: () => playEmote(ANIMATIONS.ClimbToTop),
-      standUp: () => playEmote(ANIMATIONS.StandUp),
-      test: () => playEmote(ANIMATIONS.IdleBashful),
+      wave: (callback) => playEmote(ANIMATIONS.Wave, callback),
+      sitDown: (callback) => playEmote(ANIMATIONS.IdleSit, callback),
+      dance: (callback) => playEmote(ANIMATIONS.Dance, callback),
+      thumbsUp: (callback) => playEmote(ANIMATIONS.ThumbsUp, callback),
+      fallImpact: (callback) => playEmote(ANIMATIONS.FallImpact, callback),
+      showBackground: (callback) => playEmote(ANIMATIONS.ShowBackground, callback),
+      climbToTop: (callback) => playEmote(ANIMATIONS.ClimbToTop, callback),
+      standUp: (callback) => playEmote(ANIMATIONS.StandUp, callback),
+      defeated: (callback) => playEmote(ANIMATIONS.Defeat, callback),
+      victory: (callback) => playEmote(ANIMATIONS.Victory, callback),
+      scared: (callback) => playEmote(ANIMATIONS.Scared, callback),
+      talking: (callback) => playEmote(ANIMATIONS.Talking, callback),
+      test: (callback) => playEmote(ANIMATIONS.Victory, callback),
       hide: () => mascotRef.current?.hide(),
       show: () => mascotRef.current?.show(),
 

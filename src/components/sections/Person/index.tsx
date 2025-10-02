@@ -76,9 +76,9 @@ const Person = () => {
       personCont.current.style.top = `${layout.offsetTop + layout.height - CanvasHeight * 0.8}px`;
 
       setTimeout(() => {
-        // mascotRef.current?.initPerson();
-        mascotRef.current?.show();
-        mascotRef.current?.wave();
+        mascotRef.current?.initPerson();
+        // mascotRef.current?.show();
+        // mascotRef.current?.wave();
       }, 1000);
     }
   }, [sectionsLayout]);

@@ -8,7 +8,7 @@ import { ANIMATION_CONFIG } from "../constants";
 import { AnimationKeyType } from "../types";
 
 type HookPropType = {
-  actions: Record<AnimationKeyType, THREE.AnimationAction | null>;
+  actions: { [x: string]: THREE.AnimationAction | null };
   mixer: THREE.AnimationMixer | null;
 };
 
@@ -21,7 +21,7 @@ export const useAnimationRunners = ({ actions, mixer }: HookPropType) => {
     isAnimating,
     getCurrentAction,
     cancelCurrentAnimation,
-    resolveCurrentAnimation,
+    resolveCurrentAnimation
   } = useFadeAction(actions);
 
   const { createFinishedListener, cleanupFinishedListeners } = useFinishedListeners(
@@ -35,7 +35,8 @@ export const useAnimationRunners = ({ actions, mixer }: HookPropType) => {
     mixer,
     fadeToAction,
     restoreToIdle,
-    createFinishedListener
+    createFinishedListener,
+    cleanupFinishedListeners
   );
 
   const playEmote = useCallback(

@@ -63,12 +63,12 @@ export const useFadeAction = (actions: { [x: string]: THREE.AnimationAction | nu
           if (config.type === "emote") {
             newAction.clampWhenFinished = true;
             newAction.loop = loop ? THREE.LoopRepeat : THREE.LoopOnce;
-            
+
             // Store promise controller for this animation
             currentPromiseController.current = {
               resolve,
               reject,
-              action: newAction
+              action: newAction,
             };
           } else {
             // Loop animations resolve immediately

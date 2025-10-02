@@ -40,14 +40,12 @@ const PersonModel = forwardRef<PersonControls, PersonProps>(({ defaultVisibile =
   // Simplified sequence definitions using the enhanced reusable function
   const initPerson = useCallback(() => {
     const sequenceConfig = generateInitPersonScenario(mascotRef);
-    return runAnimationSequence(sequenceConfig.sequence, "initPerson", sequenceConfig.fallback).catch(console.log);
+    return runAnimationSequence(sequenceConfig.sequence, "initPerson", sequenceConfig.fallback);
   }, [runAnimationSequence]);
 
   const initFallScenario = useCallback(() => {
     const sequenceConfig = generateFallScenario(mascotRef);
-    return runAnimationSequence(sequenceConfig.sequence, "initFallScenario", sequenceConfig.fallback).catch(
-      console.log
-    );
+    return runAnimationSequence(sequenceConfig.sequence, "initFallScenario", sequenceConfig.fallback);
   }, [runAnimationSequence]);
 
   // Utility methods

@@ -5,14 +5,12 @@ import { SequenceStep, AnimationKeyType } from "../types";
 import { logError, logInfo } from "../helpers";
 
 export const useSequenceRunner = (
-  actions: Record<AnimationKeyType, THREE.AnimationAction | null>,
+  actions: { [x: string]: THREE.AnimationAction | null },
   mixer: THREE.AnimationMixer | null,
   fadeToAction: (name: AnimationKeyType, duration?: number) => Promise<void>,
   restoreToIdle: () => Promise<void>,
-  createFinishedListener: (
-    animationName: AnimationKeyType,
-    customCallback?: () => void
-  ) => (e: { action?: THREE.AnimationAction }) => void
+  createFinishedListener: (animationName: AnimationKeyType, customCallback?: () => void) => void,
+  cleanupFinishedListeners: () => void
 ) => {
   const isSequenceRunningRef = useRef(false);
   const sequenceAbortController = useRef<AbortController | null>(null);
@@ -67,10 +65,18 @@ export const useSequenceRunner = (
               logInfo(`${sequenceName} - Step ${stepNumber}: Animation ${animation}`, { duration: stepDuration });
 
               if (step.runBefore) {
-                await step.runBefore();
+                const result = step.runBefore();
+                if (result instanceof Promise) {
+                  await result;
+                }
               }
 
-              createFinishedListener(step.animation, step.runBefore);
+              // Cleanup any old listeners before creating new one
+              cleanupFinishedListeners();
+              
+              // Create the finished listener BEFORE calling fadeToAction
+              createFinishedListener(animation);
+              
               await fadeToAction(animation, stepDuration);
 
               logInfo(`${sequenceName} - Step ${stepNumber} completed: ${animation}`);
@@ -90,17 +96,13 @@ export const useSequenceRunner = (
             case "delay": {
               logInfo(`${sequenceName} - Step ${stepNumber}: Delay ${step.duration}ms`);
 
-              // ✅ Cancel-aware delay
               await new Promise<void>((resolve, reject) => {
                 const timeout = setTimeout(resolve, step.duration);
-                abortController.signal.addEventListener(
-                  "abort",
-                  () => {
-                    clearTimeout(timeout);
-                    reject(new Error("Sequence aborted during delay"));
-                  },
-                  { once: true }
-                );
+                const abortHandler = () => {
+                  clearTimeout(timeout);
+                  reject(new Error("Sequence aborted during delay"));
+                };
+                abortController.signal.addEventListener("abort", abortHandler, { once: true });
               });
 
               logInfo(`${sequenceName} - Step ${stepNumber} completed: Delay`);
@@ -108,7 +110,7 @@ export const useSequenceRunner = (
             }
 
             default: {
-              const error = `Unknown step type: ${step}`;
+              const error = `Unknown step type`;
               logError(error);
               throw new Error(error);
             }
@@ -125,32 +127,64 @@ export const useSequenceRunner = (
         isSequenceRunningRef.current = false;
         sequenceAbortController.current = null;
       } catch (error: unknown) {
-        isSequenceRunningRef.current = false;
-        sequenceAbortController.current = null;
+        // Check if WE were cancelled BEFORE clearing state
+        const wasCancelledByNewSequence = sequenceAbortController.current !== abortController;
+        const anotherSequenceIsRunning = isSequenceRunningRef.current && wasCancelledByNewSequence;
+        
+        // Only clear running state if we're still the active sequence
+        if (sequenceAbortController.current === abortController) {
+          isSequenceRunningRef.current = false;
+          sequenceAbortController.current = null;
+        }
 
-        if (error instanceof Error && error.message === "Sequence aborted") {
+        if (error instanceof Error && (error.message === "Sequence aborted" || error.message.includes("cancelled"))) {
           logInfo(`${sequenceName} was cancelled`);
+          
+          // DON'T do anything if another sequence is running
+          if (anotherSequenceIsRunning) {
+            throw new Error(`${sequenceName} cancelled`);
+          }
+          
+          // Only run cleanup if no other sequence took over
+          if (fallback) {
+            try {
+              fallback();
+            } catch (fallbackError) {
+              logError("Fallback function failed", fallbackError);
+            }
+          }
+          
+          try {
+            await restoreToIdle();
+          } catch (restoreError) {
+            logError("Failed to restore to idle after cancellation", restoreError);
+          }
+          
           throw new Error(`${sequenceName} cancelled`);
         }
 
-        // ✅ Normalize error typing
         const normalizedError = error instanceof Error ? error : new Error(String(error));
         logError(`${sequenceName} failed at execution`, normalizedError);
 
-        try {
-          fallback?.();
-          await restoreToIdle();
-        } catch (restoreError) {
-          logError("Failed to restore to idle after sequence error", restoreError);
+        // Only cleanup if another sequence isn't running
+        if (!anotherSequenceIsRunning) {
+          try {
+            if (fallback) {
+              fallback();
+            }
+            await restoreToIdle();
+          } catch (restoreError) {
+            logError("Failed to restore to idle after sequence error", restoreError);
+          }
         }
 
         throw normalizedError;
       }
     },
-    [actions, mixer, fadeToAction, restoreToIdle, cancelSequence, createFinishedListener]
+    [actions, mixer, fadeToAction, restoreToIdle, cancelSequence, createFinishedListener, cleanupFinishedListeners]
   );
 
-  return {
+  return { 
     runAnimationSequence,
     cancelSequence,
     isSequenceRunning: () => isSequenceRunningRef.current,

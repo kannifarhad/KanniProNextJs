@@ -16,10 +16,14 @@ export const useFadeAction = (actions: { [x: string]: THREE.AnimationAction | nu
   const isAnimatingRef = useRef(false);
   const currentPromiseController = useRef<AnimationPromiseController | null>(null);
 
-  const cancelCurrentAnimation = useCallback(() => {
+  const cancelCurrentAnimation = useCallback((cleanupListeners?: () => void) => {
     if (currentPromiseController.current) {
       currentPromiseController.current.reject("Animation cancelled");
       currentPromiseController.current = null;
+    }
+    // Call cleanup listeners if provided
+    if (cleanupListeners) {
+      cleanupListeners();
     }
   }, []);
 
@@ -33,8 +37,11 @@ export const useFadeAction = (actions: { [x: string]: THREE.AnimationAction | nu
           return;
         }
 
-        // Cancel any existing animation promise
-        cancelCurrentAnimation();
+        // Cancel any existing animation promise and cleanup listeners
+        if (currentPromiseController.current) {
+          currentPromiseController.current.reject("Animation cancelled");
+          currentPromiseController.current = null;
+        }
 
         isAnimatingRef.current = true;
 
@@ -82,7 +89,7 @@ export const useFadeAction = (actions: { [x: string]: THREE.AnimationAction | nu
         }
       });
     },
-    [actions, cancelCurrentAnimation]
+    [actions]
   );
 
   const restoreToIdle = useCallback((): Promise<void> => {

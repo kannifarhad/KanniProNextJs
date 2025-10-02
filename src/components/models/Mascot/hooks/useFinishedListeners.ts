@@ -12,12 +12,15 @@ export const useFinishedListeners = (
   const finishedListenersRef = useRef<Set<(e: any) => void>>(new Set());
 
   const createFinishedListener = useCallback(
-    (customCallback?: () => void) => {
+    (animationName: AnimationKeyType, customCallback?: () => void) => {
       let hasResolved = false; // Prevent double resolution
       
       const listener = (e: { action?: THREE.AnimationAction }) => {
         if (!e?.action || hasResolved) return;
         const actionName = e.action.getClip().name as AnimationKeyType;
+
+        // Only handle the animation this listener was created for
+        if (actionName !== animationName) return;
 
         logInfo("Animation finished", { actionName });
 

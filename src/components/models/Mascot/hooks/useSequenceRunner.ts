@@ -5,11 +5,14 @@ import { SequenceStep, AnimationKeyType } from "../types";
 import { logError, logInfo } from "../helpers";
 
 export const useSequenceRunner = (
-  actions: Record<AnimationKeyType, THREE.AnimationAction | null>, // ✅ Stronger typing
+  actions: Record<AnimationKeyType, THREE.AnimationAction | null>,
   mixer: THREE.AnimationMixer | null,
   fadeToAction: (name: AnimationKeyType, duration?: number) => Promise<void>,
   restoreToIdle: () => Promise<void>,
-  createFinishedListener: (customCallback?: () => void) => (e: { action?: THREE.AnimationAction }) => void
+  createFinishedListener: (
+    animationName: AnimationKeyType,
+    customCallback?: () => void
+  ) => (e: { action?: THREE.AnimationAction }) => void
 ) => {
   const isSequenceRunningRef = useRef(false);
   const sequenceAbortController = useRef<AbortController | null>(null);
@@ -24,7 +27,7 @@ export const useSequenceRunner = (
   }, []);
 
   const runAnimationSequence = useCallback(
-    async (sequence: SequenceStep[], sequenceName = "Animation Sequence"): Promise<void> => {
+    async (sequence: SequenceStep[], sequenceName = "Animation Sequence", fallback?: () => void): Promise<void> => {
       if (!sequence?.length) {
         const error = `Cannot run ${sequenceName}: sequence is empty`;
         logError(error);
@@ -67,7 +70,7 @@ export const useSequenceRunner = (
                 await step.runBefore();
               }
 
-              createFinishedListener(step.runBefore);
+              createFinishedListener(step.animation, step.runBefore);
               await fadeToAction(animation, stepDuration);
 
               logInfo(`${sequenceName} - Step ${stepNumber} completed: ${animation}`);
@@ -135,6 +138,7 @@ export const useSequenceRunner = (
         logError(`${sequenceName} failed at execution`, normalizedError);
 
         try {
+          fallback?.();
           await restoreToIdle();
         } catch (restoreError) {
           logError("Failed to restore to idle after sequence error", restoreError);

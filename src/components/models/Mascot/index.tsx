@@ -3,7 +3,7 @@ import * as THREE from "three";
 import React, { useImperativeHandle, forwardRef, useRef, memo, useCallback } from "react";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { MascotGroup, MascotGroupRef } from "./MascotGroup";
-import { PersonControls, PersonProps, SequenceStep } from "./types";
+import { AnimationKeyType, PersonControls, PersonProps } from "./types";
 import { ANIMATIONS, GLTF_PATH } from "./constants";
 import { generateFallScenario, generateInitPersonScenario, logInfo } from "./helpers";
 import { useAnimationRunners } from "./hooks/useAnimationRunners";
@@ -15,7 +15,10 @@ useGLTF.preload(GLTF_PATH);
 const PersonModel = forwardRef<PersonControls, PersonProps>(({ defaultVisibile = false, ...props }, ref) => {
   const group = useRef<THREE.Group>(null);
   const gltf = useGLTF(GLTF_PATH);
-  const { actions, mixer } = useAnimations(gltf.animations, group);
+  const { actions, mixer } = useAnimations(gltf.animations, group) as unknown as {
+    actions: Record<AnimationKeyType, THREE.AnimationAction | null>;
+    mixer: THREE.AnimationMixer;
+  };
 
   // Animation state management
   const mascotRef = useRef<MascotGroupRef>(null);
@@ -36,13 +39,15 @@ const PersonModel = forwardRef<PersonControls, PersonProps>(({ defaultVisibile =
 
   // Simplified sequence definitions using the enhanced reusable function
   const initPerson = useCallback(() => {
-    const sequence: SequenceStep[] = generateInitPersonScenario(mascotRef);
-    return runAnimationSequence(sequence, "initPerson");
+    const sequenceConfig = generateInitPersonScenario(mascotRef);
+    return runAnimationSequence(sequenceConfig.sequence, "initPerson", sequenceConfig.fallback).catch(console.log);
   }, [runAnimationSequence]);
 
   const initFallScenario = useCallback(() => {
-    const sequence: SequenceStep[] = generateFallScenario(mascotRef);
-    return runAnimationSequence(sequence, "initFallScenario");
+    const sequenceConfig = generateFallScenario(mascotRef);
+    return runAnimationSequence(sequenceConfig.sequence, "initFallScenario", sequenceConfig.fallback).catch(
+      console.log
+    );
   }, [runAnimationSequence]);
 
   // Utility methods

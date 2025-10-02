@@ -8,7 +8,7 @@ import { ANIMATION_CONFIG } from "../constants";
 import { AnimationKeyType } from "../types";
 
 type HookPropType = {
-  actions: { [x: string]: THREE.AnimationAction | null };
+  actions: Record<AnimationKeyType, THREE.AnimationAction | null>;
   mixer: THREE.AnimationMixer | null;
 };
 
@@ -47,7 +47,12 @@ export const useAnimationRunners = ({ actions, mixer }: HookPropType) => {
       }
 
       try {
-        createFinishedListener(customCallback);
+        // Cleanup old listeners before creating new one
+        cleanupFinishedListeners();
+
+        // Create listener for this specific animation
+        createFinishedListener(animationName, customCallback);
+
         await fadeToAction(animationName, ANIMATION_CONFIG[animationName]?.duration || 0.2);
         logInfo(`Emote "${animationName}" completed`);
 
@@ -58,7 +63,7 @@ export const useAnimationRunners = ({ actions, mixer }: HookPropType) => {
         throw error;
       }
     },
-    [actions, mixer, fadeToAction, createFinishedListener, restoreToIdle]
+    [actions, mixer, fadeToAction, createFinishedListener, cleanupFinishedListeners, restoreToIdle]
   );
 
   const stopAllAnimations = useCallback(() => {

@@ -28,97 +28,119 @@ export const logInfo = (message: string, data?: unknown) => {
   console.log(`[PersonModel] ${message}`, data ?? "");
 };
 
-export const generateInitPersonScenario = (mascotRef: RefObject<MascotGroupRef>): SequenceStep[] => {
-  return [
-    {
-      type: "function",
-      fn: () => {
-        mascotRef.current?.hide();
-        mascotRef.current?.openPortal({ hide: "above" });
-      },
-      name: "Hide mascot and open portal",
-    },
-    {
-      type: "delay",
-      duration: 500,
-      name: "Initial delay",
-    },
-    {
-      type: "animation",
-      animation: ANIMATIONS.ClimbToTop,
-      runBefore: () => mascotRef.current?.show(),
-      duration: 0,
-    },
-    {
-      type: "function",
-      fn: () => {
-        mascotRef.current?.show();
-      },
-      name: "Show mascot",
-    },
-    {
-      type: "function",
-      fn: () => {
-        mascotRef.current?.closePortal();
-      },
-      name: "Close portal",
-    },
-    {
-      type: "animation",
-      animation: ANIMATIONS.Wave,
-      duration: 0.2,
-    },
-    {
-      type: "animation",
-      animation: ANIMATIONS.ShowBackground,
-      duration: 0.2,
-    },
-  ];
+type SequenceConfigType = {
+  sequence: SequenceStep[];
+  fallback?: () => void;
 };
 
-export const generateFallScenario = (mascotRef: RefObject<MascotGroupRef>): SequenceStep[] => {
-  return [
-    {
-      type: "function",
-      fn: () => {
-        mascotRef.current?.hide();
-        mascotRef.current?.openPortal({ position: [1.6, 6.5, 0], size: 9, rotation: [Math.PI / 2.4, 0, 0], hide: "above" });
+export const generateInitPersonScenario = (mascotRef: RefObject<MascotGroupRef>): SequenceConfigType => {
+  return {
+    sequence: [
+      {
+        type: "function",
+        fn: () => {
+          mascotRef.current?.hide();
+          mascotRef.current?.openPortal({ hide: "above" });
+        },
+        name: "Hide mascot and open portal",
       },
-      name: "Hide mascot and open portal with config",
-    },
-    {
-      type: "delay",
-      duration: 500,
-      name: "Initial delay",
-    },
-    {
-      type: "function",
-      fn: () => {
-        mascotRef.current?.show();
+      {
+        type: "delay",
+        duration: 500,
+        name: "Initial delay",
       },
-      name: "Show mascot",
-    },
-    {
-      type: "animation",
-      animation: ANIMATIONS.FallImpact,
-      duration: 0,
-    },
-    {
-      type: "function",
-      fn: () => {
-        mascotRef.current?.closePortal();
+      {
+        type: "animation",
+        animation: ANIMATIONS.ClimbToTop,
+        runBefore: () => mascotRef.current?.show(),
+        duration: 0,
       },
-      name: "Close portal",
+      {
+        type: "function",
+        fn: () => {
+          mascotRef.current?.show();
+        },
+        name: "Show mascot",
+      },
+      {
+        type: "function",
+        fn: () => {
+          mascotRef.current?.closePortal();
+        },
+        name: "Close portal",
+      },
+      {
+        type: "animation",
+        animation: ANIMATIONS.Wave,
+        duration: 0.2,
+      },
+      {
+        type: "animation",
+        animation: ANIMATIONS.ShowBackground,
+        duration: 0.2,
+      },
+    ],
+    fallback: () => {
+      // mascotRef.current?.show();
+      mascotRef.current?.closePortal();
     },
-    {
-      type: "animation",
-      animation: ANIMATIONS.StandUp,
-      duration: 0.3,
+  };
+};
+
+export const generateFallScenario = (mascotRef: RefObject<MascotGroupRef>): SequenceConfigType => {
+  return {
+    sequence: [
+      {
+        type: "function",
+        fn: () => {
+          mascotRef.current?.hide();
+          mascotRef.current?.openPortal({
+            position: [1.6, 6.5, 0],
+            size: 9,
+            rotation: [Math.PI / 2.4, 0, 0],
+            hide: "above",
+          });
+        },
+        name: "Hide mascot and open portal with config",
+      },
+      {
+        type: "delay",
+        duration: 500,
+        name: "Initial delay",
+      },
+      {
+        type: "function",
+        fn: () => {
+          mascotRef.current?.show();
+        },
+        name: "Show mascot",
+      },
+      {
+        type: "animation",
+        animation: ANIMATIONS.FallImpact,
+        duration: 0,
+      },
+      {
+        type: "function",
+        fn: () => {
+          mascotRef.current?.closePortal();
+        },
+        name: "Close portal",
+      },
+      {
+        type: "animation",
+        animation: ANIMATIONS.StandUp,
+        duration: 0.3,
+      },
+      {
+        type: "animation",
+        animation: ANIMATIONS.ThumbsUp,
+        duration: 0.3,
+      },
+    ],
+    fallback: () => {
+      // mascotRef.current?.show();
+      mascotRef.current?.closePortal();
     },
-     {
-      type: "animation",
-      animation: ANIMATIONS.ThumbsUp,
-      duration: 0.3,
-    },
-  ];
+  };
 };

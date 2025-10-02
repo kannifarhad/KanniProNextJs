@@ -37,12 +37,12 @@ const PersonModel = forwardRef<PersonControls, PersonProps>(({ defaultVisibile =
   // Simplified sequence definitions using the enhanced reusable function
   const initPerson = useCallback(() => {
     const sequence: SequenceStep[] = generateInitPersonScenario(mascotRef);
-    runAnimationSequence(sequence, "initPerson");
+    return runAnimationSequence(sequence, "initPerson");
   }, [runAnimationSequence]);
 
   const initFallScenario = useCallback(() => {
     const sequence: SequenceStep[] = generateFallScenario(mascotRef);
-    runAnimationSequence(sequence, "initFallScenario");
+    return runAnimationSequence(sequence, "initFallScenario");
   }, [runAnimationSequence]);
 
   // Utility methods

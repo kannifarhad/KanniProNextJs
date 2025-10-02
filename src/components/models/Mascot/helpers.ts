@@ -25,7 +25,7 @@ export const logError = (message: string, error?: unknown) => {
 };
 
 export const logInfo = (message: string, data?: unknown) => {
-  console.log(`[PersonModel] ${message}`, data);
+  console.log(`[PersonModel] ${message}`, data ?? "");
 };
 
 export const generateInitPersonScenario = (mascotRef: RefObject<MascotGroupRef>): SequenceStep[] => {
@@ -34,7 +34,7 @@ export const generateInitPersonScenario = (mascotRef: RefObject<MascotGroupRef>)
       type: "function",
       fn: () => {
         mascotRef.current?.hide();
-        mascotRef.current?.open({ hide: "above" });
+        mascotRef.current?.openPortal({ hide: "above" });
       },
       name: "Hide mascot and open portal",
     },
@@ -59,7 +59,7 @@ export const generateInitPersonScenario = (mascotRef: RefObject<MascotGroupRef>)
     {
       type: "function",
       fn: () => {
-        mascotRef.current?.close();
+        mascotRef.current?.closePortal();
       },
       name: "Close portal",
     },
@@ -82,7 +82,7 @@ export const generateFallScenario = (mascotRef: RefObject<MascotGroupRef>): Sequ
       type: "function",
       fn: () => {
         mascotRef.current?.hide();
-        mascotRef.current?.open({ position: [1.6, 6.5, 0], size: 9, rotation: [Math.PI / 2.4, 0, 0], hide: "above" });
+        mascotRef.current?.openPortal({ position: [1.6, 6.5, 0], size: 9, rotation: [Math.PI / 2.4, 0, 0], hide: "above" });
       },
       name: "Hide mascot and open portal with config",
     },
@@ -106,7 +106,7 @@ export const generateFallScenario = (mascotRef: RefObject<MascotGroupRef>): Sequ
     {
       type: "function",
       fn: () => {
-        mascotRef.current?.close();
+        mascotRef.current?.closePortal();
       },
       name: "Close portal",
     },

@@ -3,18 +3,23 @@ import * as THREE from "three";
 import { logInfo } from "../helpers";
 import { AnimationKeyType } from "../types";
 
-export const useFinishedListeners = (mixer: THREE.AnimationMixer | null, restoreToIdle: () => void, emoteAnimations: AnimationKeyType[]) => {
+export const useFinishedListeners = (
+  mixer: THREE.AnimationMixer | null,
+  resolveCurrentAnimation: () => void,
+  emoteAnimations: AnimationKeyType[]
+) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const finishedListenersRef = useRef<Set<(e: any) => void>>(new Set());
 
   const createFinishedListener = useCallback(
     (customCallback?: () => void) => {
+      let hasResolved = false; // Prevent double resolution
+      
       const listener = (e: { action?: THREE.AnimationAction }) => {
-        if (!e?.action) return;
+        if (!e?.action || hasResolved) return;
         const actionName = e.action.getClip().name as AnimationKeyType;
 
         logInfo("Animation finished", { actionName });
-        customCallback?.();
 
         if (mixer) {
           mixer.removeEventListener("finished", listener);
@@ -22,7 +27,13 @@ export const useFinishedListeners = (mixer: THREE.AnimationMixer | null, restore
         }
 
         if (emoteAnimations.includes(actionName)) {
-          restoreToIdle();
+          hasResolved = true;
+          
+          // Resolve the promise first
+          resolveCurrentAnimation();
+          
+          // Then execute custom callback if provided
+          customCallback?.();
         }
       };
 
@@ -32,7 +43,7 @@ export const useFinishedListeners = (mixer: THREE.AnimationMixer | null, restore
       }
       return listener;
     },
-    [mixer, restoreToIdle, emoteAnimations]
+    [mixer, resolveCurrentAnimation, emoteAnimations]
   );
 
   const cleanupFinishedListeners = useCallback(() => {

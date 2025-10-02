@@ -31,14 +31,15 @@ const Person = () => {
   // throttle the animation trigger
   const waveAction = useThrottle(() => {
     if (mascotRef.current?.isAnimating()) return;
-    mascotRef.current?.wave();
+    danceScenario();
+    mascotRef.current?.wave().catch(console.log);
   }, 2000);
 
   const danceScenario = () => {
     speechRef.current?.addBubble(
       suggestDance(() => {
         speechRef.current?.resetBubble();
-        mascotRef.current?.dance(() =>
+        mascotRef.current?.dance().then(() =>
           speechRef.current?.addBubble(
             askDanceFeedBack({
               onDislikeClick: () => {
@@ -59,7 +60,6 @@ const Person = () => {
   const handleHoverOn = useCallback(() => {
     if (mascotRef.current?.isAnimating()) return;
     waveAction();
-    danceScenario();
   }, [waveAction]);
 
   const handleHoverOut = useCallback(() => {
@@ -74,8 +74,11 @@ const Person = () => {
       const center = layout.width / 2 - CanvasWidth / 2;
       personCont.current.style.left = `${center + CanvasWidth / 4}px`;
       personCont.current.style.top = `${layout.offsetTop + layout.height - CanvasHeight * 0.8}px`;
+
       setTimeout(() => {
-        mascotRef.current?.initPerson();
+        // mascotRef.current?.initPerson();
+        mascotRef.current?.show();
+        mascotRef.current?.wave();
       }, 1000);
     }
   }, [sectionsLayout]);
@@ -96,10 +99,10 @@ const Person = () => {
         case "contact-me":
           personCont.current.style.left = `${center}px`;
           personCont.current.style.top = `${topOffset}px`;
-          mascotRef.current?.initFallScenario();
-          setTimeout(() => {
+          mascotRef.current?.initFallScenario().then(() => {
             speechRef.current?.addBubble(contactMe());
-          }, 5000);
+          });
+
           break;
         default:
           mascotRef.current?.hide();
@@ -113,7 +116,7 @@ const Person = () => {
 
   return (
     <>
-      {/* <Controls mascotRef={mascotRef} /> */}
+      <Controls mascotRef={mascotRef} />
 
       <div
         className="person"
@@ -150,7 +153,7 @@ const Person = () => {
           </group>
 
           {/* <OrbitControls enablePan={false} minPolarAngle={Math.PI / 2.5} maxPolarAngle={Math.PI / 2.5} /> */}
-          <ContactShadows position={[0, -2, 0]} scale={10} blur={2} opacity={0.6} far={4} layers={0} />
+          <ContactShadows position={[0, -2, 0]} scale={10} blur={3} opacity={0.6} far={10} layers={0} />
         </RenderModel>
       </div>
     </>
@@ -165,7 +168,7 @@ export const Controls = ({ mascotRef }: any) => {
         type="submit"
         className="btn p-2"
         onClick={() => {
-          mascotRef.current?.runWave();
+          mascotRef.current?.wave();
         }}
       >
         Wave

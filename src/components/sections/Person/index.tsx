@@ -77,8 +77,6 @@ const Person = () => {
 
       setTimeout(() => {
         mascotRef.current?.initPerson();
-        // mascotRef.current?.show();
-        // mascotRef.current?.wave();
       }, 1000);
     }
   }, [sectionsLayout]);
@@ -116,7 +114,7 @@ const Person = () => {
 
   return (
     <>
-      <Controls mascotRef={mascotRef} />
+      {/* <Controls mascotRef={mascotRef} /> */}
 
       <div
         className="person"

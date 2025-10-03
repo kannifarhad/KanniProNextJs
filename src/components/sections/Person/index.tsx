@@ -10,7 +10,7 @@ import { classNames } from "@/helpers/classNames";
 import { PersonControls } from "@/components/models/Mascot";
 import useThrottle from "@/hooks/useThrottle";
 import { usePersonStore } from "../SectionsObserver/personStore";
-import PersonSpeech, { suggestDance, askDanceFeedBack, PersonSpeechRef, contactMe } from "./PersonSpeech";
+import PersonSpeech, { suggestDance, askDanceFeedBack, PersonSpeechRef, contactMe, heroSpeech } from "./PersonSpeech";
 
 const PersonModel = dynamic(() => import("@/components/models/Mascot"), {
   ssr: false,
@@ -23,7 +23,6 @@ const Person = () => {
   const mascotRef = useRef<PersonControls>(null);
   const personCont = useRef<HTMLDivElement>(null);
   const speechRef = useRef<PersonSpeechRef>(null);
-
   const isInitalAnimationRun = useRef<boolean>(false);
   const activeSection = usePersonStore((s) => s.activeSection);
   const sectionsLayout = usePersonStore((s) => s.sectionsLayout);
@@ -31,11 +30,7 @@ const Person = () => {
   // throttle the animation trigger
   const waveAction = useThrottle(() => {
     if (mascotRef.current?.isAnimating()) return;
-    danceScenario();
-    mascotRef.current?.wave().catch(console.log);
-  }, 2000);
-
-  const danceScenario = () => {
+    speechRef.current?.resetBubble();
     speechRef.current?.addBubble(
       suggestDance(() => {
         speechRef.current?.resetBubble();
@@ -55,7 +50,8 @@ const Person = () => {
         );
       })
     );
-  };
+    mascotRef.current?.wave().catch();
+  }, 2000);
 
   const handleHoverOn = useCallback(() => {
     if (mascotRef.current?.isAnimating()) return;
@@ -76,7 +72,12 @@ const Person = () => {
       personCont.current.style.top = `${layout.offsetTop + layout.height - CanvasHeight * 0.8}px`;
 
       setTimeout(() => {
-        mascotRef.current?.initPerson();
+        mascotRef.current
+          ?.initPerson()
+          .then(() => {
+            speechRef.current?.addBubble(heroSpeech());
+          })
+          .catch(console.log);
       }, 1000);
     }
   }, [sectionsLayout]);
@@ -92,23 +93,23 @@ const Person = () => {
         case "header":
           personCont.current.style.left = `${center + CanvasWidth / 4}px`;
           personCont.current.style.top = `${layout.offsetTop + layout.height - CanvasHeight * 0.8}px`;
-          mascotRef.current?.initPerson();
-          break;
+          mascotRef.current?.initPerson().catch();
+          return;
         case "contact-me":
           personCont.current.style.left = `${center}px`;
           personCont.current.style.top = `${topOffset}px`;
-          mascotRef.current?.initFallScenario().then(() => {
-            speechRef.current?.addBubble(contactMe());
-          });
-
-          break;
+          mascotRef.current
+            ?.initFallScenario()
+            .then(() => {
+              speechRef.current?.addBubble(contactMe());
+            })
+            .catch();
+          return;
         default:
           mascotRef.current?.hide();
       }
-    } else {
-      mascotRef.current?.hide();
     }
-
+    mascotRef.current?.hide();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSection]);
 

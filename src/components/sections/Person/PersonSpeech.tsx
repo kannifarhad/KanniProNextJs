@@ -63,6 +63,15 @@ export const contactMe = (): Bubble => ({
   ),
 });
 
+export const heroSpeech = (): Bubble => ({
+  id: "heroSpeech",
+  content: (
+    <div className="flex gap-2 flex-col">
+      <span>Hey! I’m Farhad’s tiny helper — welcome! 👋 Click the gadgets to see more infomration or hover on me if you want a dance break.</span>
+    </div>
+  ),
+});
+
 const PersonSpeech = forwardRef<PersonSpeechRef>((_, ref) => {
   const [bubbles, setBubbles] = useState<Bubble[]>([]);
 

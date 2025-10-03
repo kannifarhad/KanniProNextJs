@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const StyledHeroInfo = styled.div`
   background-color: var(--head-background);
   background-size: 500px;
-  background-position: right bottom;
+  background-position: right 50px;
   background-repeat: no-repeat;
   padding: 40px 20px 40px 0px;
   height: var(--hero-height);
